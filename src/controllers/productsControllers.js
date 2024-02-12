@@ -1,6 +1,8 @@
 const fs = require("fs/promises");
 const path = require("path");
 const Product = require("../schemas/productsSchemas.js");
+const {io} = require("../app.js");
+const { log } = require("console");
 
 // Obtengo todos los productos
 
@@ -76,6 +78,10 @@ async function postProduct(req, res) {
     products.push(newProduct);
     await fs.writeFile(filePath, JSON.stringify(products, null, 2));
 
+    
+    socket.emit('productoCreado' ,`El producto se ha creado correctamente`)
+  
+
     res.status(200).json(newProduct);
   } catch (error) {
     res.status(500).json({ error: "Error al agregar un nuevo producto" });
@@ -131,6 +137,9 @@ async function deleteProduct(req, res) {
     const updatedProducts = products.filter((p) => p.id !== productId);
 
     await fs.writeFile(filePath, JSON.stringify(updatedProducts, null, 2));
+
+    io.emit('productoEliminado', "el producto se elimino exitosamente");
+
 
     res.json({ message: "Producto eliminado exitosamente" });
   } catch (error) {

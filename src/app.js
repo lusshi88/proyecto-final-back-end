@@ -2,20 +2,37 @@ const express = require("express");
 const productsRoutes =  require('./routes/products.js');
 const cartRoutes = require('./routes/carts.js');
 const path = require('path');
-const productos = require ("./data/productos.json");
+const httpServer = require('http');
 
-
-const handlebars = require('express-handlebars'); 
-
-
+// puerto del server --------------------------------
 const PORT = 8080;
 
 const app = express();
 
-// motor de plantillas
+
+// productos de mi JSON
+const productos = require ("./data/productos.json");
+
+
+// socket -------------------------------------------
+const {Server} = require('socket.io');
+const io = new Server(httpServer);
+
+io.on("connection",(socket) => {
+  console.log("nuevo cliente conectado :", socket.id);
+})
+
+// handlebars ---------------------------------------
+const handlebars = require('express-handlebars'); 
 app.engine("handlebars",handlebars.engine());
 app.set("view engine", "handlebars");
+
 app.set("views", path.join(__dirname, "../views"));
+
+app.get("/realtimeproducts", (req, res) => {
+  res.render("./layouts/realTimeProducts.handlebars", { productos: productos });
+});
+
 
 // ruta principal
 app.get("/",(req, res) => {
@@ -41,7 +58,17 @@ app.use(`/${API_PREFIX}/products`, cartRoutes);
 
 
 
+
 // Codigo para iniciar el server ----------------
 app.listen(PORT, () => {
   console.log("Server en funcionamiento");
 });
+
+
+app.get ("/"),(req, res) => {
+  res.render("index.js")
+}
+
+module.exports = {
+  httpServer, 
+  io };
