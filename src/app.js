@@ -4,10 +4,18 @@ const cartRoutes = require('./routes/carts.js');
 const path = require('path');
 const httpServer = require('http');
 
+
+const displayRoutes = require('express-routemap');
+
+
+
 // puerto del server --------------------------------
 const PORT = 8080;
 
 const app = express();
+
+// Middleware para analizar cuerpos de solicitud JSON
+app.use(express.json());
 
 
 // productos de mi JSON
@@ -61,6 +69,7 @@ app.use(`/${API_PREFIX}/products`, cartRoutes);
 
 // Codigo para iniciar el server ----------------
 app.listen(PORT, () => {
+  displayRoutes(app)
   console.log("Server en funcionamiento");
 });
 
