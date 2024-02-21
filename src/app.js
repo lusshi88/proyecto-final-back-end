@@ -33,30 +33,22 @@ app.use(express.json());
 const productos = require ("./data/productos.json");
 
 
-// socket -------------------------------------------
-// const {Server} = require('socket.io');
-// const io = new Server(httpServer);
-
-// io.on("connection",(socket) => {
-//   console.log("nuevo cliente conectado :", socket.id);
-// })
-
 // handlebars ---------------------------------------
-const handlebars = require('express-handlebars'); 
-app.engine("handlebars",handlebars.engine());
-app.set("view engine", "handlebars");
+// const handlebars = require('express-handlebars'); 
+// app.engine("handlebars",handlebars.engine());
+// app.set("view engine", "handlebars");
 
-app.set("views", path.join(__dirname, "../views"));
+// app.set("views", path.join(__dirname, "../views"));
 
-app.get("/realtimeproducts", (req, res) => {
-  res.render("./layouts/realTimeProducts.handlebars", { productos: productos });
-});
+// app.get("/realtimeproducts", (req, res) => {
+//   res.render("./layouts/realTimeProducts.handlebars", { productos: productos });
+// });
 
 
 // ruta principal
-app.get("/",(req, res) => {
-  res.render ("./layouts/home.handlebars", {productos: productos});
-  });
+// app.get("/",(req, res) => {
+//   res.render ("./layouts/home.handlebars", {productos: productos});
+//   });
   
 
 

@@ -1,9 +1,14 @@
 const mongoose = require("mongoose");
 
-const collectionName = "ecommerce";
+const collectionName = "cars";
 
 const cartsSchema = new mongoose.Schema({
-  tittle: {
+  title: {
+    type: String,
+    required: true,
+   
+  },
+  description:{ 
     type: String,
     required: true,
   },
@@ -13,7 +18,16 @@ const cartsSchema = new mongoose.Schema({
   },
   model: {
     type: String,
-    required: true}
+    required: true
+  },
+  stock:{ 
+    type: Number,
+    required: true,
+  },
+    price:{ 
+      type: Number,
+      required: true,
+    },
  
 });
 
