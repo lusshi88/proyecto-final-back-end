@@ -3,9 +3,20 @@ const productsRoutes =  require('./routes/products.js');
 const cartRoutes = require('./routes/carts.js');
 const path = require('path');
 const httpServer = require('http');
-
-
 const displayRoutes = require('express-routemap');
+
+
+// MONGODB --------------------------------
+const mongoose  = require ("mongoose")
+mongoose.connect('mongodb+srv://ecommerce88:UWfDP0RRKUB5Oofa@cluster88.gxgjzbs.mongodb.net/?retryWrites=true&w=majority', {
+    dbName: 'ecommerce',
+  })
+    .then((conn) => {
+        console.log("CONNECTED TO MONGODB ")
+    })
+    .catch((err) => {
+        console.log("ERROR CONNECTING TO DB", err)
+    })
 
 
 
@@ -23,12 +34,12 @@ const productos = require ("./data/productos.json");
 
 
 // socket -------------------------------------------
-const {Server} = require('socket.io');
-const io = new Server(httpServer);
+// const {Server} = require('socket.io');
+// const io = new Server(httpServer);
 
-io.on("connection",(socket) => {
-  console.log("nuevo cliente conectado :", socket.id);
-})
+// io.on("connection",(socket) => {
+//   console.log("nuevo cliente conectado :", socket.id);
+// })
 
 // handlebars ---------------------------------------
 const handlebars = require('express-handlebars'); 
@@ -79,5 +90,4 @@ app.get ("/"),(req, res) => {
 }
 
 module.exports = {
-  httpServer, 
-  io };
+  httpServer };

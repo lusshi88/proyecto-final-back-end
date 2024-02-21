@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const collectionName = "carts";
+const collectionName = "ecommerce";
 
 const cartsSchema = new mongoose.Schema({
   tittle: {
