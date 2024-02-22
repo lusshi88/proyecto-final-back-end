@@ -2,14 +2,14 @@ const Product = require("../schemas/productsSchemas.js");
 
 const carsData = require("../data/productos.json");
 
-const carsModel = require("../models/carsModel.js");
+const productsModel = require("../models/productsModel.js");
 
 // Inserto los productos
 async function getProductsInsert (req,res){
   try {
-    let result = await carsModel.insertMany (carsData)
+    let result = await productsModel.insertMany (carsData)
   console.log(result);
-  return res.json({
+  return res.status(200).json({
     message: "insert exitoso",
     carts: result,
   })
@@ -21,10 +21,10 @@ async function getProductsInsert (req,res){
 // Obtengo todos los productos insertados
 async function getProducts (req,res){
   try {
-    let cars = await carsModel.find({})
+    let cars = await productsModel.find({})
     //con el sort 1, ordeno el precio de menor a mayor
     .sort({price :1})
-    return res.json({
+    return res.status(200).json({
       message:"cars list",
       cars,
     })
@@ -41,7 +41,7 @@ async function getProductsLowerPrice (req,res){
     let carsLowerPrice;
     if  (queryPrice){
     const prices = parseFloat(queryPrice);
-    carsLowerPrice = await carsModel.find({
+    carsLowerPrice = await productsModel.find({
       price : { $lte: prices}
       
     })
@@ -49,9 +49,9 @@ async function getProductsLowerPrice (req,res){
     .sort({price :1})
   } else{
     //si no pone nada como query, trae los 10 productos
-    carsLowerPrice = await carsModel.find({}).limit(10);
+    carsLowerPrice = await productsModel.find({}).limit(10);
   }
-  return res.json({
+  return res.status(202).json({
     message:"cars lower price list",
     carsLowerPrice,
     // arreglo para saber cuantos productos en total trajo la filtración
@@ -69,9 +69,9 @@ async function getProductsCheaper (req,res){
   try {
     const {limitQuery} = req.query;
     const limitt = parseFloat(limitQuery);
-    let carsCheaper = await carsModel.find({})
+    let carsCheaper = await productsModel.find({})
     .sort ({price: 1}).limit(limitt)
-    return res.json({
+    return res.status(202).json({
       message:"Cheapest product",
       carsCheaper,
     })

@@ -64,7 +64,7 @@ app.use(`/static`,express.static(`public`));
 
 
 app.use(`/${API_PREFIX}/products`, productsRoutes);
-app.use(`/${API_PREFIX}/products`, cartRoutes);
+app.use(`/${API_PREFIX}/cart`, cartRoutes);
 
 
 
