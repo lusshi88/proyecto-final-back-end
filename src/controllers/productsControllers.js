@@ -38,15 +38,24 @@ async function getProducts (req,res){
 async function getProductsLowerPrice (req,res){
   try {
     const {queryPrice} = req.query;
+    let carsLowerPrice;
+    if  (queryPrice){
     const prices = parseFloat(queryPrice);
-    const carsLowerPrice = await carsModel.find({
+    carsLowerPrice = await carsModel.find({
       price : { $lte: prices}
+      
     })
-    return res.json({
-      message:"cars lower price list",
-      carsLowerPrice,
-      // arreglo para saber cuantos productos en total trajo la filtración
-      carsLowerPriceCount: carsLowerPrice.length
+    //ademas le pongo un ordenamiento de precios (de menor a mayor )
+    .sort({price :1})
+  } else{
+    //si no pone nada como query, trae los 10 productos
+    carsLowerPrice = await carsModel.find({}).limit(10);
+  }
+  return res.json({
+    message:"cars lower price list",
+    carsLowerPrice,
+    // arreglo para saber cuantos productos en total trajo la filtración
+    carsLowerPriceCount: carsLowerPrice.length
     })
  
 } catch (error) {

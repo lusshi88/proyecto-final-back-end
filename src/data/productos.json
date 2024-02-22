@@ -2,10 +2,9 @@
    {
       "title": "Peugeot 206 XS Premium",
       "description": "El tope de gama del 206",
-      "code": "H001",
       "price": 5000,
       "color": "Rojo",
-      "model": "2008",
+      "model": 2008,
       "stock": 10,
       "thumbnails": [
         "url1",
@@ -15,10 +14,9 @@
     {
       "title": "Fiat uno SCR",
       "description": "El mas full",
-      "code": "B001",
       "price": 3000,
       "color": "Azul",
-      "model": "1996",
+      "model": 1996,
       "stock": 12,
       "thumbnails": [
         "url5",
@@ -28,10 +26,9 @@
     {
       "title": "VW Gol trend",
       "description": "Base",
-      "code": "K001",
       "price": 5500,
       "color": "Negro",
-      "model": "2010",
+      "model": 2010,
       "stock": 15,
       "thumbnails": [
         "url7",
@@ -41,10 +38,9 @@
     {
       "title": "Renault Clio Mio",
       "description": "Base",
-      "code": "Y001",
       "price": 4000,
       "color": "Gris",
-      "model": "2012",
+      "model": 2012,
       "stock": 25,
       "thumbnails": [
         "url9",
@@ -54,10 +50,9 @@
     {
       "title": "Ford Fiesta Kinetic Titanium",
       "description": "El mas full",
-      "code": "D001",
       "price": 22000,
       "color": "Rojo",
-      "model": "2017",
+      "model": 2017,
       "stock": 18,
       "thumbnails": [
         "url11",
@@ -67,10 +62,9 @@
     {
       "title": "Chevrolet Corsa ",
       "description": "3 puertas , motor 1.4L",
-      "code": "S001",
       "price": 5000,
       "color": "Blanco",
-      "model": "2006",
+      "model": 2006,
       "stock": 15,
       "thumbnails": [
         "url13",
@@ -80,10 +74,9 @@
     {
       "title": "Vw Bora 1.8 T",
       "description": "Asientos de cuero, motor 1.8T (con la T ROJA que da mas HP)",
-      "code": "T001",
       "price": 10000,
       "color": "Negro",
-      "model": "2010",
+      "model": 2010,
       "stock": 10,
       "thumbnails": [
         "url15",
@@ -93,10 +86,9 @@
     {
       "title": "Vw Vento 2.0 T",
       "description": "Asientos de cuero, motor turbo",
-      "code": "A001",
       "price": 12000,
       "color": "Rojo",
-      "model": "2009",
+      "model": 2009,
       "stock": 14,
       "thumbnails": [
         "url17",
@@ -106,11 +98,23 @@
     {
       "title": "Vw Fox",
       "description": "Levanta vidrios, aire acondicionado",
-      "code": "K002",
       "price": 4500,
       "color": "Negro",
-      "model": "2011",
+      "model": 2011,
       "stock": 8,
+      "thumbnails": [
+        "url19",
+        "url20"
+      
+      ]
+    },
+    {
+      "title": "Toyota Corolla",
+      "description": "Full full",
+      "price": 25000,
+      "color": "Negro",
+      "model": 2022,
+      "stock": 20,
       "thumbnails": [
         "url19",
         "url20"
