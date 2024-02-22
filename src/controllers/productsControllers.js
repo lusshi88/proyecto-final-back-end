@@ -1,7 +1,9 @@
 const Product = require("../schemas/productsSchemas.js");
 
+//datos de los productos.json
 const carsData = require("../data/productos.json");
 
+//modelo de los productos 
 const productsModel = require("../models/productsModel.js");
 
 // Inserto los productos
@@ -21,12 +23,37 @@ async function getProductsInsert (req,res){
 // Obtengo todos los productos insertados
 async function getProducts (req,res){
   try {
-    let cars = await productsModel.find({})
+    const { page = 1, limit = 10 } = req.query;
+
+    const {
+      docs,
+      totalDocs,
+      limit: limitPag,
+      totalPages,
+      hasPrevPage,
+      hasNextPage,
+      nextPage,
+      prevPage,
+      prevLink,
+    } = await productsModel.paginate({}, { page, limit })
+
+    
+
+    // let cars = await productsModel.find({})
     //con el sort 1, ordeno el precio de menor a mayor
-    .sort({price :1})
+    // .sort({price :1})
     return res.status(200).json({
       message:"cars list",
-      cars,
+      payload: docs,
+      totalPages,
+      prevPage,
+      nextPage,
+      page,
+      hasPrevPage,
+      hasNextPage,
+      prevLink,
+      length: totalDocs,
+    limit: limitPag
     })
  
 } catch (error) {
