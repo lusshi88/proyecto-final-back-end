@@ -1,5 +1,3 @@
-// const fs = require("fs/promises");
-// const path = require("path");
 const Product = require("../schemas/productsSchemas.js");
 
 const carsData = require("../data/productos.json");
@@ -24,7 +22,7 @@ async function getProductsInsert (req,res){
 async function getProducts (req,res){
   try {
     let cars = await carsModel.find({})
-    //con el sort -1, ordeno el precio de menor a mayor
+    //con el sort 1, ordeno el precio de menor a mayor
     .sort({price :1})
     return res.json({
       message:"cars list",
@@ -36,11 +34,13 @@ async function getProducts (req,res){
 }
 };
 
-// Busco por filtración (en este caso: busco los que sean menor al precio de 5000)
+// codigo para buscar por query ,el precio menor de los productos
 async function getProductsLowerPrice (req,res){
   try {
-    let carsLowerPrice = await carsModel.find({
-      price : { $lte: 5000}
+    const {queryPrice} = req.query;
+    const prices = parseFloat(queryPrice);
+    const carsLowerPrice = await carsModel.find({
+      price : { $lte: prices}
     })
     return res.json({
       message:"cars lower price list",
@@ -53,6 +53,26 @@ async function getProductsLowerPrice (req,res){
   console.log(error);
 }
 };
+
+
+// Traigo el producto más barato de todos (implemento el limit para esto :) )
+async function getProductsCheaper (req,res){
+  try {
+    const {limitQuery} = req.query;
+    const limitt = parseFloat(limitQuery);
+    let carsCheaper = await carsModel.find({})
+    .sort ({price: 1}).limit(limitt)
+    return res.json({
+      message:"Cheapest product",
+      carsCheaper,
+    })
+ 
+} catch (error) {
+  console.log(error);
+}
+};
+
+
 
 
 
@@ -177,7 +197,8 @@ async function getProductsLowerPrice (req,res){
 module.exports = {
   getProductsInsert,
   getProducts,
-  getProductsLowerPrice
+  getProductsLowerPrice,
+  getProductsCheaper
   // getProductId,
   // postProduct,
   // putProduct,
