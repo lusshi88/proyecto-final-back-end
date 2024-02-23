@@ -1,53 +1,54 @@
 // const fs = require('fs/promises');
 // const path = require('path');
 
-const cartModel = require ( "../models/cartModel.js" );
+const cartModel = require ("../models/cartModel.js")
+const productsModel = require("../models/productsModel.js");
 
-
-// Inserto los productos
-async function getCarInsert (req,res){
+async function createCart(req, res) {
   try {
-    let result = await cartModel.insertMany()
-  console.log(result);
-  return res.status(200).json({
-    message: "insert exitoso",
-    carts: result,
-  })
-} catch (error) {
-  console.log(error);
+    // Crear un nuevo carrito vacío
+    const newCart = await cartModel.create({ products: [] });
+
+    console.log('Carrito insertado:', newCart);
+    
+    return res.status(200).json({
+      message: "Inserción exitosa",
+      cart: newCart
+    });
+  } catch (error) {
+    console.error('Error al insertar el carrito:', error);
+    return res.status(500).json({ error: 'Error al insertar el carrito' });
+  }
 }
-};
 
 
 
-// async function postCart(req, res) {
-//   const newCart = {
-//     id: Date.now().toString(),
-//     products: [],
-//   };
+//intento mandar un producto al carrito vacio que cree arriba :)
+async function addToCart(productId, cartId) {
+  try {
+    // Busca el producto por su ID en la base de datos
+    const product = await  productsModel.findById(productId);
+    console.log(product);
 
-//   try {
-//     const filePath = path.resolve(__dirname, '..', 'data', 'carrito.json');
+    if (!product) {
+      throw new Error('Producto no encontrado');
+    }
 
-//     const cartsData = await fs.readFile(filePath, 'utf-8');
-//     await fs.writeFile(filePath, JSON.stringify(carts, null, 2));
+    // Encuentra el carrito por su ID y agrega el producto
+    const updatedCart = await cartModel.findByIdAndUpdate(cartId, { $push: { products: product } }, { new: true });
 
-//     let carts;
-// try {
-//   carts = JSON.parse(cartsData);
-// } catch (parseError) {
-//   console.error('Error al analizar el contenido del archivo JSON:', parseError);
-//   return res.status(500).json({ error: 'Error en el formato del archivo JSON' });
-// }
+    console.log('Producto agregado al carrito:', updatedCart);
 
-//     carts.push(newCart);
-//     await fs.writeFile('data/carrito.json', JSON.stringify(carts, null, 2));
+    return updatedCart;
+  } catch (error) {
+    console.error('Error al agregar producto al carrito:', error);
+    throw error; // Manejar el error según sea necesario
+  }
+}
 
-//     res.status(200).json(newCart);
-//   } catch (error) {
-//     res.status(500).json({ error: 'Error al crear un nuevo carrito' });
-//   }
-// }
+
+
+
 
 // async function getCartId(req, res) {
 //     const cartId = req.params.cid;
@@ -83,7 +84,7 @@ async function getCarInsert (req,res){
 //     }
 //   }
 module.exports = {
-  getCarInsert
-    // getCartId,
+  createCart,
+  addToCart
 
 }
