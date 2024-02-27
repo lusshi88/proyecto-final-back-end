@@ -7,7 +7,7 @@ const carsData = require("../data/productos.json");
 const productsModel = require("../models/productsModel.js");
 
 // Inserto los productos
-async function getProductsInsert (req,res){
+async function PostProductsInsert (req,res){
   try {
     let result = await productsModel.insertMany (carsData)
   console.log(result);
@@ -111,7 +111,7 @@ async function getProductsCheaper (req,res){
 
 
 module.exports = {
-  getProductsInsert,
+  PostProductsInsert,
   getProducts,
   getProductsLowerPrice,
   getProductsCheaper

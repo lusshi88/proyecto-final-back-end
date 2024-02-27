@@ -3,22 +3,17 @@ const mongoose = require("mongoose");
 const collectionName = "cart";
 
 const cartsSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    // required: true,
-   
-  },
-
-  stock:{ 
+  products: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "product"
+    }
+  ],
+  quantity:{
     type: Number,
-    // required: true,
-  },
-    price:{ 
-      type: Number,
-      // required: true,
-    },
- 
-});
+    default: 1,
+  }
+})
 
 const cartsModel = mongoose.model(collectionName, cartsSchema);
 module.exports = cartsModel;
