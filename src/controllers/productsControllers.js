@@ -9,7 +9,7 @@ const productsModel = require("../models/productsModel.js");
 // Inserto los productos
 async function PostProductsInsert (req,res){
   try {
-    let result = await productsModel.insertMany (carsData)
+    let result = await productsModel.find (carsData).populate("")
   console.log(result);
   return res.status(200).json({
     message: "insert exitoso",

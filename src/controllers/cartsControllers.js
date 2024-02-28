@@ -46,45 +46,36 @@ async function addToCart(productId, cartId) {
   }
 }
 
+//funcion para buscar el producto por id y borrarlo
+async function removeFromCart(productId, cartId) {
+  try {
+    // Busca el producto por su ID en la base de datos
+    const product = await productsModel.findById(productId);
+    console.log(product);
 
+    if (!product) {
+      throw new Error('Producto no encontrado');
+    }
 
+    // Encuentra el carrito por su ID y remueve el producto
+    const updatedCart = await cartModel.findByIdAndUpdate(
+      cartId,
+      { $pull: { products: { _id: productId } } },
+      { new: true }
+    );
 
+    console.log('Producto eliminado del carrito:', updatedCart);
 
-// async function getCartId(req, res) {
-//     const cartId = req.params.cid;
-  
-//     try {
-//       const filePath = path.resolve(__dirname, '..', 'data', 'carrito.json');
-  
-//       // Leer el contenido del archivo antes de escribir en él
-//       const cartsData = await fs.readFile(filePath, 'utf-8');
-      
-//       // Parsear el contenido del archivo JSON en un array de carritos
-//       let carts;
-//       try {
-//         carts = JSON.parse(cartsData);
-//       } catch (error) {
-//         console.error( 'Error al analizar el contenido del archivo JSON:' );
-//         return res.status(500).json({ error: 'Error en el formato del archivo JSON' });
-//       }
-  
-//       //  buscar el carrito por su ID
-//       const cart = carts.find((cart) => cart.id === cartId);
-  
-//       if (cart) {
-//         res.status(208).json(cart.products);
-//       } else {
-//         res.status(404).json({ error: 'Carrito no encontrado' });
-//       }
-  
-//       //  escribe los cambios de vuelta al archivo
-//       await fs.writeFile(filePath, JSON.stringify(carts, null, 2));
-//     } catch (error) {
-//       res.status(500).json({ error: 'Error al obtener el carrito' });
-//     }
-//   }
+    return updatedCart;
+  } catch (error) {
+    console.error('Error al eliminar producto del carrito:', error);
+    throw error; // Manejar el error según sea necesario
+  }
+}
+
 module.exports = {
   createCart,
-  addToCart
+  addToCart,
+  removeFromCart
 
 }
