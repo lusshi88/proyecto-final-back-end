@@ -21,13 +21,11 @@ async function createCart(req, res) {
   }
 }
 
-
-
-//intento mandar un producto al carrito vacio que cree arriba :)
+//funcion para mandar un producto al carrito
 async function addToCart(productId, cartId) {
   try {
-    // Busca el producto por su ID en la base de datos
-    const product = await  productsModel.findById(productId);
+    // Busca el producto por su ID en la base de datos y lo popula
+    const product = await productsModel.findById(productId);
     console.log(product);
 
     if (!product) {
@@ -35,7 +33,11 @@ async function addToCart(productId, cartId) {
     }
 
     // Encuentra el carrito por su ID y agrega el producto
-    const updatedCart = await cartModel.findByIdAndUpdate(cartId, { $push: { products: product } }, { new: true });
+    const updatedCart = await cartModel.findByIdAndUpdate(
+      cartId,
+      { $push: { products: { product: product } } },
+      { new: true }
+    ).populate('products.product');
 
     console.log('Producto agregado al carrito:', updatedCart);
 
@@ -46,6 +48,8 @@ async function addToCart(productId, cartId) {
   }
 }
 
+
+
 //funcion para buscar el producto por id y borrarlo
 async function removeFromCart(productId, cartId) {
   try {
@@ -54,7 +58,7 @@ async function removeFromCart(productId, cartId) {
     console.log(product);
 
     if (!product) {
-      throw new Error('Producto no encontrado');
+      throw new Error(`producto ${productId} no encontrado`);
     }
 
     // Encuentra el carrito por su ID y remueve el producto
@@ -69,13 +73,34 @@ async function removeFromCart(productId, cartId) {
     return updatedCart;
   } catch (error) {
     console.error('Error al eliminar producto del carrito:', error);
-    throw error; // Manejar el error según sea necesario
+    throw error; 
   }
 }
+
+//borra todos los productos 
+async function removeAllFromCart(cartId) {
+  try {
+    // Encuentra el carrito por su ID y establece el arreglo de productos como vacío
+    const updatedCart = await cartModel.findByIdAndUpdate(
+      cartId,
+      { $set: { products: [] } }, // Establece el arreglo de productos como vacío
+      { new: true }
+    );
+
+    console.log('Todos los productos eliminados del carrito:', updatedCart);
+
+    return updatedCart;
+  } catch (error) {
+    console.error('Error al eliminar todos los productos del carrito:', error);
+    throw error; 
+  }
+}
+
 
 module.exports = {
   createCart,
   addToCart,
-  removeFromCart
+  removeFromCart,
+  removeAllFromCart
 
 }

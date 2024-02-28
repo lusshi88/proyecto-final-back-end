@@ -5,7 +5,7 @@ const router = express.Router();
 
 
 
-
+//ruta para crear el carrito nuevo
 router.post('/', productsController.createCart);
 
 //agrego un producto por su id , en el carrito tambien con su id
@@ -22,6 +22,13 @@ router.delete('/:cid/product/:pid', async (req, res) => {
     res.status(200).json(cart)
 });
 
+//busco el id del carrito, y borro todo lo que tiene adentro 
+router.delete('/:cid', async (req,res) => {
+    const {cid} = req.params
+    const cart = await productsController.removeAllFromCart(cid)
+    res.status(200).json(cart)
+
+});
 
 
 

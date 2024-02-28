@@ -37,8 +37,6 @@ async function getProducts (req,res){
       prevLink,
     } = await productsModel.paginate({}, { page, limit })
 
-    
-
     // let cars = await productsModel.find({})
     //con el sort 1, ordeno el precio de menor a mayor
     // .sort({price :1})

@@ -1,6 +1,7 @@
 const express = require("express");
 const productsRoutes =  require('./routes/products.js');
 const cartRoutes = require('./routes/carts.js');
+const viewsRoutes = require('./routes/views.js');
 const path = require('path');
 const httpServer = require('http');
 const displayRoutes = require('express-routemap');
@@ -32,27 +33,6 @@ app.use(express.json());
 // productos de mi JSON
 const productos = require ("./data/productos.json");
 
-
-// handlebars ---------------------------------------
-// const handlebars = require('express-handlebars'); 
-// app.engine("handlebars",handlebars.engine());
-// app.set("view engine", "handlebars");
-
-// app.set("views", path.join(__dirname, "../views"));
-
-// app.get("/realtimeproducts", (req, res) => {
-//   res.render("./layouts/realTimeProducts.handlebars", { productos: productos });
-// });
-
-
-// ruta principal
-// app.get("/",(req, res) => {
-//   res.render ("./layouts/home.handlebars", {productos: productos});
-//   });
-  
-
-
-
 app.use(express.json());
 // app.use(express.urlencoded());
 
@@ -65,6 +45,7 @@ app.use(`/static`,express.static(`public`));
 
 app.use(`/${API_PREFIX}/products`, productsRoutes);
 app.use(`/${API_PREFIX}/carts`, cartRoutes);
+app.use(`/${API_PREFIX}/views`, viewsRoutes);
 
 
 

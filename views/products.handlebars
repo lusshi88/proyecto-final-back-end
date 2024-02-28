@@ -1,0 +1,13 @@
+<div>
+    <h1>Detalles del producto seleccionado </h1>
+    {{#each payload}}
+    <p> {{this.title}}</p>
+     <p> {{this.description}}</p>
+     <p> {{this.color}}</p>
+     <p> {{this.model}}</p>
+     {{/each}}
+</div>
+
+<div>
+    <p>Pagina actual {{page}}</p>
+</div>
