@@ -5,6 +5,26 @@ const viewsRoutes = require('./routes/views.js');
 const path = require('path');
 const httpServer = require('http');
 const displayRoutes = require('express-routemap');
+const handlebars = require('express-handlebars');
+
+
+
+
+
+// puerto del server --------------------------------
+const PORT = 8080;
+
+const app = express();
+
+// Middleware para analizar cuerpos de solicitud JSON
+app.use(express.json());
+
+//handlebars 
+app.engine("handlebars", handlebars.engine());
+app.set("views", path.join(__dirname, "views"));
+console.log("hola s",path.join(__dirname, "/views"));
+
+app.set("view engine", "handlebars")
 
 
 // MONGODB --------------------------------
@@ -19,15 +39,6 @@ mongoose.connect('mongodb+srv://ecommerce88:UWfDP0RRKUB5Oofa@cluster88.gxgjzbs.m
         console.log("ERROR CONNECTING TO DB", err)
     })
 
-
-
-// puerto del server --------------------------------
-const PORT = 8080;
-
-const app = express();
-
-// Middleware para analizar cuerpos de solicitud JSON
-app.use(express.json());
 
 
 // productos de mi JSON
@@ -45,7 +56,9 @@ app.use(`/static`,express.static(`public`));
 
 app.use(`/${API_PREFIX}/products`, productsRoutes);
 app.use(`/${API_PREFIX}/carts`, cartRoutes);
-app.use(`/${API_PREFIX}/views`, viewsRoutes);
+
+//ruta para la vista de handlebars
+app.use(`/views`, viewsRoutes);
 
 
 
