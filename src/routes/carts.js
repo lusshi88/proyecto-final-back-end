@@ -12,6 +12,7 @@ router.post('/', productsController.createCart);
 router.put('/:cid/product/:pid', async (req, res) => {
     const {cid,pid} = req.params
     const cart = await productsController.addToCart(pid, cid)
+    console.log(cart);
     res.status(200).json(cart)
 });
 

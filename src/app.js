@@ -8,9 +8,6 @@ const displayRoutes = require('express-routemap');
 const handlebars = require('express-handlebars');
 
 
-
-
-
 // puerto del server --------------------------------
 const PORT = 8080;
 
@@ -21,9 +18,7 @@ app.use(express.json());
 
 //handlebars 
 app.engine("handlebars", handlebars.engine());
-app.set("views", path.join(__dirname, "views"));
-console.log("hola s",path.join(__dirname, "/views"));
-
+app.set("views", path.join(__dirname, "/views"));
 app.set("view engine", "handlebars")
 
 

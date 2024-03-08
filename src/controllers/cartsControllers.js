@@ -24,7 +24,7 @@ async function createCart(req, res) {
 //funcion para mandar un producto al carrito
 async function addToCart(productId, cartId) {
   try {
-    // Busca el producto por su ID en la base de datos y lo popula
+    // Busca el producto por su ID en la base de datos 
     const product = await productsModel.findById(productId);
     console.log(product);
 
@@ -35,7 +35,7 @@ async function addToCart(productId, cartId) {
     // Encuentra el carrito por su ID y agrega el producto
     const updatedCart = await cartModel.findByIdAndUpdate(
       cartId,
-      { $push: { products: { product: product } } },
+      { $push: { products: { $each: [{ product: product }] } } },
       { new: true }
     ).populate('products.product');
 
