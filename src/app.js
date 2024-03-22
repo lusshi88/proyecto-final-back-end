@@ -6,6 +6,8 @@ const path = require('path');
 const httpServer = require('http');
 const displayRoutes = require('express-routemap');
 const handlebars = require('express-handlebars');
+const cookieParser = require('cookie-parser');
+const passport = require('passport');
 
 
 // puerto del server --------------------------------
