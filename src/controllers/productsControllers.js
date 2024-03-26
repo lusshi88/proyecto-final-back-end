@@ -6,10 +6,10 @@ const carsData = require("../data/productos.json");
 //modelo de los productos 
 const productsModel = require("../models/productsModel.js");
 
-// Inserto los productos
-async function PostProductsInsert (req,res){
+// función para insertar los productos
+async function createProducts (req,res){
   try {
-    let result = await productsModel.find (carsData).populate("")
+    let result = await productsModel.create(carsData)
   console.log(result);
   return res.status(200).json({
     message: "insert exitoso",
@@ -17,10 +17,11 @@ async function PostProductsInsert (req,res){
   })
 } catch (error) {
   console.log(error);
+  return res.status(500).json({message: "error del servidor"});
 }
 };
 
-// Obtengo todos los productos insertados
+// función para traer todos los productos
 async function getProducts (req,res){
   try {
     const { page = 1, limit = 10 } = req.query;
@@ -59,7 +60,29 @@ async function getProducts (req,res){
 }
 };
 
-// codigo para buscar por query ,el precio menor de los productos
+
+//función para buscar productos por su ID
+async function getProductsById (req,res) {
+  try {
+    const {pid} = req.params;
+    if (!pid) {
+      return res.status(400).json({ message: "ID de producto no proporcionado" });
+    }
+    const product = await productsModel.findById(pid);
+    if (!product) {
+      return res.status(404).json({ message: "Producto no encontrado" });
+    }
+    return res.status(200).json({
+      message: "producto encontrado", product})
+      
+    
+    
+  } catch (error) {
+    return res.status(500).json({ message:"error del servidor" });
+  }
+};
+
+// función para buscar por query ,el precio menor de los productos
 async function getProductsLowerPrice (req,res){
   try {
     const {queryPrice} = req.query;
@@ -89,7 +112,7 @@ async function getProductsLowerPrice (req,res){
 };
 
 
-// Traigo el producto más barato de todos (implemento el limit para esto :) )
+// función para traer el producto más barato (implemento el limit)
 async function getProductsCheaper (req,res){
   try {
     const {limitQuery} = req.query;
@@ -106,12 +129,64 @@ async function getProductsCheaper (req,res){
 }
 };
 
+//función para buscar un producto y actualizarlo 
+async function updateProduct (req,res){
+  try {
+    const {pid} = req.params
+    if (!pid) {
+      return res.status(400).json({ message: "ID de producto no proporcionado" });
+    }
+
+    const product = await productsModel.findById(pid);
+    if (!product) {
+      return res.status(404).json({ message: "El producto no existe" });
+    }
+    
+    const { title, price, description } = req.body;
+    if (title) product.title = title;
+    if (price) product.price = price;
+    if (description) product.description = description;
+
+    await product.save();
+    return res.status(200).json({ message: "Producto actualizado", product });
+
+
+  } catch (error) {
+    console.log("error al actualizar el producto", error);
+    return res.status(500).json({ message:"error del servidor" });
+  }
+};
+
+//función para eliminar un producto
+async function deleteProduct (req,res) {
+  try {
+    const {pid} = req.params
+    if (!pid) {
+      return res.status(400).json({ message: "ID de producto no proporcionado" });
+    }
+    const product = await productsModel.findById(pid);
+    if (!product) {
+      return res.status(404).json({ message: "El producto no existe" });
+    }
+
+    await productsModel.findByIdAndDelete(pid);
+    return res.status(200).json({ message: "Producto eliminado correctamente" });
+    
+  } catch (error) {
+    console.log("No se pudo eliminar el producto", error);
+    return res.status(500).json({ message:"No se pudo eliminar el producto" });
+  }
+};
+
 
 
 module.exports = {
-  PostProductsInsert,
+  createProducts,
   getProducts,
   getProductsLowerPrice,
-  getProductsCheaper
+  getProductsCheaper,
+  getProductsById,
+  updateProduct,
+  deleteProduct
  
 };
