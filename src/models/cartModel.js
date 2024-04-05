@@ -14,7 +14,7 @@ const cartsSchema = new mongoose.Schema({
         type: Number,
         required: true
       },
-    
+      
     }
   ]
 });

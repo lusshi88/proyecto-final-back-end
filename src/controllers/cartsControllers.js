@@ -1,9 +1,8 @@
-// const fs = require('fs/promises');
-// const path = require('path');
-
-const cartModel = require ("../models/cartModel.js")
+const cartModel = require ("../models/cartModel.js");
 const productsModel = require("../models/productsModel.js");
 
+
+//función para crear el carrito
 async function createCart(req, res) {
   try {
     // Crear un nuevo carrito vacío
@@ -21,36 +20,107 @@ async function createCart(req, res) {
   }
 }
 
-//funcion para mandar un producto al carrito
-async function addToCart(productId, cartId) {
+//función para buscar los productos de un carrito con su ID
+async function cartByIdProducts (req,res) {
   try {
+  const {cid} = req.params
+  console.log(cid);
+  if (!cid) {
+    return res.status(400).json({ message: "ID del carrito no proporcionado" });
+  }
+  const cart = await cartModel.findById(cid);
+  console.log(cart);
+  if (!cart) {
+    return res.status(404).json({ message: "El carrito no existe" });
+  }
+return res.status(200).json({ message: `Estos son los productos del carrito con el ID: ${cid}`,cart });
+
+} catch (error){
+  console.log("error al buscar el carrito por su id",error);
+  res.status(500).json({ message: "Error del servidor"});
+}
+}
+
+
+//función para agregar un producto al carrito como arreglo
+
+async function cidProductPid (req, res) {
+
+};
+
+//función para mandar un producto al carrito
+// async function addToCart(productId, cartId) {
+//   try {
+//     // Busca el producto por su ID en la base de datos 
+//     const product = await productsModel.findById(productId);
+//     console.log(product);
+
+//     if (!product) {
+//       throw new Error('Producto no encontrado');
+//     }
+
+//     // Encuentra el carrito por su ID y agrega el producto
+//     const updatedCart = await cartModel.findByIdAndUpdate(
+//       cartId,
+//       { $push: { products: { $each: [{ product: product }] } } },
+//       { new: true }
+//     ).populate('products.product');
+
+//     console.log('Producto agregado al carrito:', updatedCart);
+
+//     return updatedCart;
+//   } catch (error) {
+//     console.error('Error al agregar producto al carrito:', error);
+//     throw error; // Manejar el error según sea necesario
+//   }
+// }
+
+
+//función para mandar un producto al carrito
+async function addToCart(req,res) {
+  try {
+
+    const {cid,pid} = req.params
+
     // Busca el producto por su ID en la base de datos 
-    const product = await productsModel.findById(productId);
+    const product = await productsModel.findById(pid);
     console.log(product);
 
     if (!product) {
-      throw new Error('Producto no encontrado');
+      return res.status(400).json({ message: "ID de producto invalido" });
     }
+    // Encuentra el carrito por su ID 
+    let cart = await cartModel.findById(cid);
 
-    // Encuentra el carrito por su ID y agrega el producto
-    const updatedCart = await cartModel.findByIdAndUpdate(
-      cartId,
-      { $push: { products: { $each: [{ product: product }] } } },
-      { new: true }
-    ).populate('products.product');
-
-    console.log('Producto agregado al carrito:', updatedCart);
-
-    return updatedCart;
+    if (!cart) {
+      return res.status(400).json({ message: "ID del carrito invalido" });
+    }
+    //verifico si ya existe el producto en el carrito     
+    const existingProductIndex = cart.products.findIndex(item => item.product.equals(pid));
+    if (existingProductIndex == -1) {
+      // Incrementar la cantidad si el producto ya está en el carrito
+      cart.products[existingProductIndex].quantity++;
+      console.log(cart.products[existingProductIndex]);
+    } else {
+      //Agrega un nuevo producto al carrito con cantidad 1
+      cart.products.push({ product: pid, quantity: 1 });
+    }
+    cart = await cart.save();
+    
+      // Agregar el producto al carrito con cantidad 1
+      await cart.populate('products.product').execPopulate();
+      
+    console.log('Producto agregado al carrito:', cart);
+    return res.status(200).json(cart);
   } catch (error) {
     console.error('Error al agregar producto al carrito:', error);
-    throw error; // Manejar el error según sea necesario
+    res.status(500).json({ message:"error del servidor"});
   }
 }
 
 
 
-//funcion para buscar el producto por id y borrarlo
+//función para buscar el producto por id y borrarlo
 async function removeFromCart(productId, cartId) {
   try {
     // Busca el producto por su ID en la base de datos
@@ -77,7 +147,7 @@ async function removeFromCart(productId, cartId) {
   }
 }
 
-//borra todos los productos 
+//función para borrar todos los productos del carrito
 async function removeAllFromCart(cartId) {
   try {
     // Encuentra el carrito por su ID y establece el arreglo de productos como vacío
@@ -99,6 +169,8 @@ async function removeAllFromCart(cartId) {
 
 module.exports = {
   createCart,
+  cartByIdProducts,
+  cidProductPid,
   addToCart,
   removeFromCart,
   removeAllFromCart
