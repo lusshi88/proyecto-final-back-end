@@ -147,6 +147,31 @@ async function removeFromCart(productId, cartId) {
   }
 }
 
+//función para actualizar el carrito con un arreglo de productos 
+async function updatedCart (req,res) {
+ try {
+  const {cid} = req.params;
+  if (!cid) {
+    return res.status(400).json({ message: "ID del carrito no proporcionado" });
+  }
+  const updatedCart = req.body
+  const result = await cartModel.findByIdAndUpdate(cid,{products: updatedCart});
+  console.log("producto actualizado", result);
+  if (!result) {
+    return res.status(404).json({ message: "Carrito no encontrado" });
+  }
+
+  return res.status(200).json({ message: "Carrito actualizado", cart: result });
+
+ } catch (error) {
+  console.log("error al actualizar el carrito", error);
+  res.status(500).json({message:"Error del servidor"});
+  
+ }
+
+};
+
+
 //función para borrar todos los productos del carrito
 async function removeAllFromCart(cartId) {
   try {
@@ -173,6 +198,7 @@ module.exports = {
   cidProductPid,
   addToCart,
   removeFromCart,
+  updatedCart,
   removeAllFromCart
 
 }
