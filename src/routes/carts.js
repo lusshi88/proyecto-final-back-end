@@ -34,6 +34,8 @@ router.delete('/:cid/products/:pid', async (req, res) => {
 //ruta para actualizar los productos del carrito seleccionado
 router.put('/:cid',cartControllers.updatedCart)
 
+router.put('/:cid/products/:pid',cartControllers.productQuantity);
+
 //busco el id del carrito, y borro todo lo que tiene adentro 
 router.delete('/:cid', async (req,res) => {
     const {cid} = req.params

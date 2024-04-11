@@ -171,6 +171,42 @@ async function updatedCart (req,res) {
 
 };
 
+async function productQuantity (req, res) {
+  try {
+    // son los parametros del carrito y el producto que se pasa por URL
+    const {cid,pid} = req.params;
+    //manejo errores por las dudas que no se encuentren el cid y pid
+    if (!cid) {
+      return res.status(400).json({ message: "ID del carrito no proporcionado" });
+    }
+    if (!pid) { 
+      return res.status(400).json({ message: "ID del producto no proporcionado" });
+    }
+    //paso por body la nueva cantidad 
+    const newQuantity = req.body.quantity;
+    if (!newQuantity) {
+      return res.status(400).json({ message: "Cantidad no proporcionada" });
+    }
+    // busco el carrito en la base de datos :)
+    const cart = await cartModel.findById(cid);
+    if (!cart) {
+      return res.status(404).json({ message: "Carrito no encontrado" });
+    }
+    //busca el producto que se paso por params en la base de datos de MONGO
+    const product = cart.products.find(product => product._id.toString() === pid);
+    if (!product) {
+      return res.status(404).json({ message: "Producto no encontrado" });
+    }
+    product.quantity = newQuantity;
+
+   await cart.save();
+    return res.status(200).json({ message: "cantidad actualizada con exito" });
+
+  } catch (error) {
+    console.log("error en el servidor al actualizar");
+    return res.status(500).json({ message:" error en el servidor al actualizar",error });
+  }
+};
 
 //función para borrar todos los productos del carrito
 async function removeAllFromCart(cartId) {
@@ -199,6 +235,7 @@ module.exports = {
   addToCart,
   removeFromCart,
   updatedCart,
+  productQuantity,
   removeAllFromCart
 
 }
