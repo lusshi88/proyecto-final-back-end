@@ -1,12 +1,13 @@
 const cartModel = require ("../models/cartModel.js");
 const productsModel = require("../models/productsModel.js");
+const cartService = require("../services/cartService.js");
 
 
 //función para crear el carrito
 async function createCart(req, res) {
   try {
     // Crear un nuevo carrito vacío
-    const newCart = await cartModel.create({ products: [] });
+    const newCart = await cartService.createCartService({ products: [] });
 
     console.log('Carrito insertado:', newCart);
     
@@ -28,7 +29,7 @@ async function cartByIdProducts (req,res) {
   if (!cid) {
     return res.status(400).json({ message: "ID del carrito no proporcionado" });
   }
-  const cart = await cartModel.findById(cid);
+  const cart = await cartService.getCartById(cid);
   console.log(cart);
   if (!cart) {
     return res.status(404).json({ message: "El carrito no existe" });
@@ -49,68 +50,14 @@ async function cidProductPid (req, res) {
 };
 
 //función para mandar un producto al carrito
-// async function addToCart(productId, cartId) {
-//   try {
-//     // Busca el producto por su ID en la base de datos 
-//     const product = await productsModel.findById(productId);
-//     console.log(product);
-
-//     if (!product) {
-//       throw new Error('Producto no encontrado');
-//     }
-
-//     // Encuentra el carrito por su ID y agrega el producto
-//     const updatedCart = await cartModel.findByIdAndUpdate(
-//       cartId,
-//       { $push: { products: { $each: [{ product: product }] } } },
-//       { new: true }
-//     ).populate('products.product');
-
-//     console.log('Producto agregado al carrito:', updatedCart);
-
-//     return updatedCart;
-//   } catch (error) {
-//     console.error('Error al agregar producto al carrito:', error);
-//     throw error; // Manejar el error según sea necesario
-//   }
-// }
-
-
-//función para mandar un producto al carrito
 async function addToCart(req,res) {
   try {
 
     const {cid,pid} = req.params
 
-    // Busca el producto por su ID en la base de datos 
-    const product = await productsModel.findById(pid);
-    console.log(product);
-
-    if (!product) {
-      return res.status(400).json({ message: "ID de producto invalido" });
-    }
-    // Encuentra el carrito por su ID 
-    let cart = await cartModel.findById(cid);
-
-    if (!cart) {
-      return res.status(400).json({ message: "ID del carrito invalido" });
-    }
-    //verifico si ya existe el producto en el carrito     
-    const existingProductIndex = cart.products.findIndex(item => item.product.equals(pid));
-    if (existingProductIndex == -1) {
-      // Incrementar la cantidad si el producto ya está en el carrito
-      cart.products[existingProductIndex].quantity++;
-      console.log(cart.products[existingProductIndex]);
-    } else {
-      //Agrega un nuevo producto al carrito con cantidad 1
-      cart.products.push({ product: pid, quantity: 1 });
-    }
-    cart = await cart.save();
-    
-      // Agregar el producto al carrito con cantidad 1
-      await cart.populate('products.product').execPopulate();
+    const cart = await cartService.addToCartService (cid,pid);
+     
       
-    console.log('Producto agregado al carrito:', cart);
     return res.status(200).json(cart);
   } catch (error) {
     console.error('Error al agregar producto al carrito:', error);
@@ -171,6 +118,7 @@ async function updatedCart (req,res) {
 
 };
 
+//función para actualizar solo la cantidad del producto , del carrito seleccionado
 async function productQuantity (req, res) {
   try {
     // son los parametros del carrito y el producto que se pasa por URL

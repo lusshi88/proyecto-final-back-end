@@ -12,17 +12,8 @@ router.post('/', cartControllers.createCart);
 //ruta para buscar un carrito por su ID y que muestre los productos en el
 router.get('/:cid', cartControllers.cartByIdProducts); 
 
-//agrego un producto por su id , en el carrito tambien con su id
-// router.put('/:cid/product/:pid', async (req, res) => {
-//     const {cid,pid} = req.params
-//     const cart = await cartControllers.addToCart(pid, cid)
-//     console.log(cart);
-//     res.status(200).json(cart)
-// });
-
+//busca el id del carrito y le agrega un producto
 router.post('/:cid/product/:pid',cartControllers.addToCart);
-
-
 
 //ruta para eliminar un producto del carrito seleccionado
 router.delete('/:cid/products/:pid', async (req, res) => {
@@ -34,6 +25,7 @@ router.delete('/:cid/products/:pid', async (req, res) => {
 //ruta para actualizar los productos del carrito seleccionado
 router.put('/:cid',cartControllers.updatedCart)
 
+//ruta para actualizar solo la cantidad del producto , del carrito seleccionado
 router.put('/:cid/products/:pid',cartControllers.productQuantity);
 
 //busco el id del carrito, y borro todo lo que tiene adentro 
