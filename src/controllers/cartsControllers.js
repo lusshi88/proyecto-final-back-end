@@ -54,10 +54,9 @@ async function addToCart(req,res) {
   try {
 
     const {cid,pid} = req.params
-
+    
     const cart = await cartService.addToCartService (cid,pid);
-     
-      
+        
     return res.status(200).json(cart);
   } catch (error) {
     console.error('Error al agregar producto al carrito:', error);
@@ -66,31 +65,15 @@ async function addToCart(req,res) {
 }
 
 
-
-//función para buscar el producto por id y borrarlo
-async function removeFromCart(productId, cartId) {
+async function removeFromCart(req,res) {
+  
+  const {cid,pid} = req.params
   try {
-    // Busca el producto por su ID en la base de datos
-    const product = await productsModel.findById(productId);
-    console.log(product);
-
-    if (!product) {
-      throw new Error(`producto ${productId} no encontrado`);
-    }
-
-    // Encuentra el carrito por su ID y remueve el producto
-    const updatedCart = await cartModel.findByIdAndUpdate(
-      cartId,
-      { $pull: { products: { _id: productId } } },
-      { new: true }
-    );
-
-    console.log('Producto eliminado del carrito:', updatedCart);
-
-    return updatedCart;
+    const cart = await cartService.removeFromCartService(cid,pid)
+    res.status(200).json({message: `producto con el id: ${pid}, eliminado correctamente`,cart});   
   } catch (error) {
     console.error('Error al eliminar producto del carrito:', error);
-    throw error; 
+    return res.status(500).json({message:"error del servidor "}); 
   }
 }
 
@@ -98,14 +81,11 @@ async function removeFromCart(productId, cartId) {
 async function updatedCart (req,res) {
  try {
   const {cid} = req.params;
-  if (!cid) {
-    return res.status(400).json({ message: "ID del carrito no proporcionado" });
-  }
   const updatedCart = req.body
   const result = await cartModel.findByIdAndUpdate(cid,{products: updatedCart});
   console.log("producto actualizado", result);
   if (!result) {
-    return res.status(404).json({ message: "Carrito no encontrado" });
+    return res.status(400).json({ message: "Carrito no encontrado" });
   }
 
   return res.status(200).json({ message: "Carrito actualizado", cart: result });
@@ -127,9 +107,11 @@ async function productQuantity (req, res) {
     if (!cid) {
       return res.status(400).json({ message: "ID del carrito no proporcionado" });
     }
+    console.log(`este es el id del cart ${cid}`);
     if (!pid) { 
       return res.status(400).json({ message: "ID del producto no proporcionado" });
     }
+    console.log(`este en el id del producto ${pid}`);
     //paso por body la nueva cantidad 
     const newQuantity = req.body.quantity;
     if (!newQuantity) {
@@ -157,21 +139,15 @@ async function productQuantity (req, res) {
 };
 
 //función para borrar todos los productos del carrito
-async function removeAllFromCart(cartId) {
+async function removeAllFromCart(req,res) {
   try {
-    // Encuentra el carrito por su ID y establece el arreglo de productos como vacío
-    const updatedCart = await cartModel.findByIdAndUpdate(
-      cartId,
-      { $set: { products: [] } }, // Establece el arreglo de productos como vacío
-      { new: true }
-    );
+    const {cid} = req.params
+    const cart = await cartService.removeAllFromCartService(cid)
+    res.status(200).json(cart)
 
-    console.log('Todos los productos eliminados del carrito:', updatedCart);
-
-    return updatedCart;
   } catch (error) {
     console.error('Error al eliminar todos los productos del carrito:', error);
-    throw error; 
+    res.status(500).json({message:"error en el servidor", error}) 
   }
 }
 

@@ -16,12 +16,8 @@ router.get('/:cid', cartControllers.cartByIdProducts);
 router.post('/:cid/product/:pid',cartControllers.addToCart);
 
 //ruta para eliminar un producto del carrito seleccionado
-router.delete('/:cid/products/:pid', async (req, res) => {
-    const {cid,pid} = req.params
-    const cart = await cartControllers.removeFromCart(pid, cid)
-    res.status(200).json(cart)
-});
-
+router.delete('/:cid/products/:pid',cartControllers.removeFromCart);
+    
 //ruta para actualizar los productos del carrito seleccionado
 router.put('/:cid',cartControllers.updatedCart)
 
@@ -29,12 +25,7 @@ router.put('/:cid',cartControllers.updatedCart)
 router.put('/:cid/products/:pid',cartControllers.productQuantity);
 
 //busco el id del carrito, y borro todo lo que tiene adentro 
-router.delete('/:cid', async (req,res) => {
-    const {cid} = req.params
-    const cart = await cartControllers.removeAllFromCart(cid)
-    res.status(200).json(cart)
-
-});
+router.delete('/:cid', cartControllers.removeAllFromCart);
 
 
 
