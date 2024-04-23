@@ -87,9 +87,47 @@ async function createProductsService (carsData){
     }
   };
 
+  async function getProductsCheaperService (limitt) {
+    try {
+      let carsCheaper = await productsModel.find({})
+      .sort ({price: 1}).limit(limitt)
+      return carsCheaper
+    } catch (error) {
+      throw new Error ("error en el servicio al traer el producto más barato");
+    }
+  };
 
+  async function updateProductService (pid,title, price, description){
+    try {
+      const product = await productsModel.findById(pid );
+    if (!product) {
+      throw new Error ("el producto no existe");
+    }
+    
+    if (title) product.title = title;
+    if (price) product.price = price;
+    if (description) product.description = description;
 
+    await product.save();
+    return product;
+    } catch (error) {
+      throw new Error ("error en el servicio al actualizar producto");
+    }
+  };
 
+  async function deleteProductService (pid){
+    try {
+      const product = await productsModel.findById(pid);
+    if (!product) {
+      throw new Error  ("El producto no existe") ;
+    }
+    await productsModel.findByIdAndDelete(pid);
+    return product;
+
+    } catch (error) {
+      
+    }
+  };
 
 
 
@@ -98,5 +136,8 @@ module.exports ={
     createProductsService,
     getProductsService,
     getProductsByIdService,
-    getProductsLowerPriceService
-};
+    getProductsLowerPriceService,
+    getProductsCheaperService,
+    updateProductService,
+    deleteProductService,
+  };

@@ -88,11 +88,10 @@ async function getProductsCheaper (req,res){
   try {
     const {limitQuery} = req.query;
     const limitt = parseFloat(limitQuery);
-    let carsCheaper = await productsModel.find({})
-    .sort ({price: 1}).limit(limitt)
+    const result = await productService.getProductsCheaperService(limitt);
     return res.status(202).json({
       message:"Cheapest product",
-      carsCheaper,
+      result,
     })
  
 } catch (error) {
@@ -107,20 +106,9 @@ async function updateProduct (req,res){
     if (!pid) {
       return res.status(400).json({ message: "ID de producto no proporcionado" });
     }
-
-    const product = await productsModel.findById(pid);
-    if (!product) {
-      return res.status(404).json({ message: "El producto no existe" });
-    }
-    
-    const { title, price, description } = req.body;
-    if (title) product.title = title;
-    if (price) product.price = price;
-    if (description) product.description = description;
-
-    await product.save();
-    return res.status(200).json({ message: "Producto actualizado", product });
-
+    const { title, price, description } = req.body
+    const result = await productService.updateProductService(pid,title, price, description);
+    return res.status(200).json({ message: "Producto actualizado", result });
 
   } catch (error) {
     console.log("error al actualizar el producto", error);
@@ -135,13 +123,9 @@ async function deleteProduct (req,res) {
     if (!pid) {
       return res.status(400).json({ message: "ID de producto no proporcionado" });
     }
-    const product = await productsModel.findById(pid);
-    if (!product) {
-      return res.status(404).json({ message: "El producto no existe" });
-    }
+    const result = await productService.deleteProductService(pid);
 
-    await productsModel.findByIdAndDelete(pid);
-    return res.status(200).json({ message: "Producto eliminado correctamente" });
+    return res.status(200).json({ message: "Producto eliminado correctamente",result });
     
   } catch (error) {
     console.log("No se pudo eliminar el producto", error);
