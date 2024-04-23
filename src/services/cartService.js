@@ -1,4 +1,3 @@
-const { ObjectId } = require('mongodb');
 const cartModel = require ('../models/cartModel');
 const productModel = require ('../models/productsModel');
 
@@ -83,12 +82,40 @@ async function removeFromCartService (cid,pid) {
     }
 };
 
-async function updatedCartService () {
-    
-  if (!cid) {
-    throw new Error( "ID del carrito no proporcionado" );
-  }
+async function updatedCartService (cid,updatedCart) {
+    try {
+        const result = await cartModel.findByIdAndUpdate(cid,{products: updatedCart});
+      console.log("producto actualizado", result);
+   
+    return result;
+    } catch (error) {
+        console.log("error al actualizar el carrito");
+        throw error;
+        
+    }
+};
 
+async function productQuantityService (cid,pid,newQuantity) {
+    try {
+        // busco el carrito en la base de datos 
+    const cart = await cartModel.findById(cid);
+    console.log( "esto trae el cart:"+ cart);
+    if (!cart) {
+    throw new Error(`carrito ${cid} no encontrado`);
+    }
+    // Busca el producto dentro del carrito
+    const product = cart.products.find(product => product.product.toString() === pid);
+    console.log("esto es lo que contiene el product:", product);
+    if (!product) {
+        throw new Error(`Producto ${pid} no encontrado en la base de datos`);
+    }
+    product.quantity =  parseInt(newQuantity);
+    await cart.save();
+    return { message: "cantidad actualizada con exito" };
+    } catch (error) {
+        throw new Error ("error al actualizar la cantidad")
+        
+    }
 };
 
 
@@ -111,5 +138,6 @@ module.exports = {
     addToCartService,
     removeFromCartService,
     updatedCartService,
+    productQuantityService,
     removeAllFromCartService,
 }

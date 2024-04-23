@@ -82,11 +82,12 @@ async function updatedCart (req,res) {
  try {
   const {cid} = req.params;
   const updatedCart = req.body
-  const result = await cartModel.findByIdAndUpdate(cid,{products: updatedCart});
-  console.log("producto actualizado", result);
+
+  const result = await cartService.updatedCartService(cid,updatedCart);
   if (!result) {
-    return res.status(400).json({ message: "Carrito no encontrado" });
+    return res.status(400)({message:"carrito no encontrodo"});
   }
+  
 
   return res.status(200).json({ message: "Carrito actualizado", cart: result });
 
@@ -107,34 +108,21 @@ async function productQuantity (req, res) {
     if (!cid) {
       return res.status(400).json({ message: "ID del carrito no proporcionado" });
     }
-    console.log(`este es el id del cart ${cid}`);
+    //console.log(`este es el id del cart ${cid}`);
     if (!pid) { 
       return res.status(400).json({ message: "ID del producto no proporcionado" });
     }
-    console.log(`este en el id del producto ${pid}`);
+    //console.log(`este en el id del producto ${pid}`);
     //paso por body la nueva cantidad 
     const newQuantity = req.body.quantity;
     if (!newQuantity) {
       return res.status(400).json({ message: "Cantidad no proporcionada" });
-    }
-    // busco el carrito en la base de datos :)
-    const cart = await cartModel.findById(cid);
-    if (!cart) {
-      return res.status(404).json({ message: "Carrito no encontrado" });
-    }
-    //busca el producto que se paso por params en la base de datos de MONGO
-    const product = cart.products.find(product => product._id.toString() === pid);
-    if (!product) {
-      return res.status(404).json({ message: "Producto no encontrado" });
-    }
-    product.quantity = newQuantity;
-
-   await cart.save();
-    return res.status(200).json({ message: "cantidad actualizada con exito" });
-
+    }   
+    const result = await cartService.productQuantityService(cid,pid,newQuantity);
+    return res.status(200).json(result);
   } catch (error) {
     console.log("error en el servidor al actualizar");
-    return res.status(500).json({ message:" error en el servidor al actualizar",error });
+    return res.status(500).json({ message:" error en el servidor al actualizar " });
   }
 };
 
