@@ -4,9 +4,6 @@ const Product = require("../schemas/productsSchemas.js");
 //datos de los productos.json
 const carsData = require("../data/productos.json");
 
-//modelo de los productos 
-const productsModel = require("../models/productsModel.js");
-
 // función para insertar los productos
 async function createProducts (req,res){
   try {

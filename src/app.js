@@ -8,10 +8,17 @@ const displayRoutes = require('express-routemap');
 const handlebars = require('express-handlebars');
 const cookieParser = require('cookie-parser');
 const passport = require('passport');
+const { PORT } = require('./config/config.js');
+
+
+console.log(PORT);
+
 
 
 // puerto del server --------------------------------
-const PORT = 8080;
+const PORT_APP = PORT
+
+
 
 const app = express();
 
@@ -41,6 +48,8 @@ mongoose.connect('mongodb+srv://ecommerce88:UWfDP0RRKUB5Oofa@cluster88.gxgjzbs.m
 // productos de mi JSON
 const productos = require ("./data/productos.json");
 
+
+
 app.use(express.json());
 // app.use(express.urlencoded());
 
@@ -62,9 +71,9 @@ app.use(`/views`, viewsRoutes);
 
 
 // Codigo para iniciar el server ----------------
-app.listen(PORT, () => {
+app.listen(PORT_APP, () => {
   displayRoutes(app)
-  console.log("Server en funcionamiento");
+  console.log(`Server en funcionamiento en el puerto ${PORT_APP} y en el enviroment ${process.env.NODE_ENV}`);
 });
 
 

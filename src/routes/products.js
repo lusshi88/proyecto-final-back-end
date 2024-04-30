@@ -24,3 +24,5 @@ router.put ('/:pid', productsController.updateProduct);
 //ruta para eliminar un producto 
 router.delete ('/:pid', productsController.deleteProduct);
 module.exports = router;
+
+

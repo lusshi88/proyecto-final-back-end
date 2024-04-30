@@ -4,7 +4,6 @@ const cartModel = require ("../models/cartModel");
 async function createProductsService (carsData){
     try {
         let result = await productsModel.create(carsData)
-        console.log(carsData);
         return result
     } catch (error) {
         throw new Error ("error en el servicio, al crear el producto");
