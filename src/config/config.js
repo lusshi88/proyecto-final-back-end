@@ -1,7 +1,7 @@
 const {config} = require ("dotenv")
 
 config ({
-    path: `.env.${process.env.NODE_ENV || "development" }.local `
+    path: `.env.${process.env.NODE_ENV || "development" }.local`
 });
 
 console.log(`.env.${process.env.NODE_ENV } `);
