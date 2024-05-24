@@ -33,15 +33,15 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  cart_id:{ 
+  cart_id:[{ 
       type: mongoose.Schema.Types.ObjectId,
       ref: "cart", // Referencia al modelo de cart
-      required: false,
       default: [],
-    },
+    }],
 role:{ 
   type: String,
-  enum: Objet.values(roleType)
+  enum: Object.values(roleType),
+  default:"USER",
 },
 });
 
