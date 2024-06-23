@@ -5,11 +5,7 @@ const  mongoosePaginate = require("mongoose-paginate-v2");
 
 const collectionName = "user";
 
-const roleType = {
-  USER: "USER",
-  ADMIN: "ADMIN",
-  PUBLIC: "PUBLIC",
-};
+const roleType = require("../roles/roles");
 
 const UserSchema = new mongoose.Schema({
   first_name: {
@@ -24,6 +20,7 @@ const UserSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
+    unique: true,
   },
   age: {
     type: Number,

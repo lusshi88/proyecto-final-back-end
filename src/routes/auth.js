@@ -25,11 +25,9 @@ try {
         res.status(401).json ({message:"contraseña incorrecta"})
     };
 
-    const {password: passwordFromDb, ...restInfoUser  } = findUser
-    console.log("finduser",findUser);
-    console.log("restInfoUser",restInfoUser);
+    const {password: passwordFromDb, first_name,last_name,email: emailDB,age,role  } = findUser
 
-    const token = await generateJWT({...restInfoUser});
+    const token = await generateJWT({first_name,last_name,email: emailDB,age,role});
 
     return res.json ({message: `bienvenido ${email},`,token});
     

@@ -3,7 +3,7 @@ const jwt = require ("jsonwebtoken");
 const SECRET_JWT = "7dc1fe516af9b79136407005cbc60b14";
 
 const generateJWT = (user) =>{
-    return new Promise (()=> {
+    return new Promise ((resolve,reject)=> { 
         jwt.sign({user},SECRET_JWT,{expiresIn:"30m"},(err,token) => {
             if (err){
                 console.log(err);

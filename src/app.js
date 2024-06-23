@@ -12,6 +12,8 @@ const cartRoutes = require('./routes/carts.js');
 const sessionsRoutes = require ("./routes/sessions")
 const viewsRoutes = require('./routes/views.js');
 const authRoutes = require ("./routes/auth.js");
+const usersRoutes = require ("./routes/user.js")
+const initializePassport = require("./config/passport.config");
 
 const { PORT } = require('./config/config.js');
 
@@ -31,7 +33,8 @@ app.use(express.json());
 // Middleware para inicializar Passport.js y manejar la autenticación de usuarios
 app.use(express.urlencoded({extended: true }));
 
-
+//passport
+initializePassport();
 app.use(passport.initialize());
 
 //handlebars 
@@ -57,6 +60,7 @@ mongoose.connect('mongodb+srv://ecommerce88:UWfDP0RRKUB5Oofa@cluster88.gxgjzbs.m
 // productos de mi JSON
 const productos = require ("./data/productos.json");
 
+
 const API_PREFIX = "api";
 
 // archivo estatico
@@ -67,6 +71,7 @@ app.use(`/${API_PREFIX}/products`, productsRoutes);
 app.use(`/${API_PREFIX}/carts`, cartRoutes);
 app.use(`/${API_PREFIX}/sessions`, sessionsRoutes);
 app.use (`/${API_PREFIX}/auth`,authRoutes);
+app.use (`/${API_PREFIX}/users`, usersRoutes);
 
 //ruta para la vista de handlebars
 app.use(`/views`, viewsRoutes);
