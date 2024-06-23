@@ -5,7 +5,7 @@ const handlePolicies = require('../middleware/handle-policies.middleware');
 
 const router = Router();
 
-//PUBLIC
+//Ruta para mostrar todos los usuarios , es pública.
 router.get("/",handlePolicies(["PUBLIC"]), async (req, res ) => {
     try {
         const users = await userModel.find();
@@ -16,7 +16,7 @@ router.get("/",handlePolicies(["PUBLIC"]), async (req, res ) => {
     }
 });
 
-//ADMIN y USER
+//Ruta para mostrar cada usuario por su ID, esta ruta solo la pueden usar los: USER Y ADMIN.
 router.get ("/:userId",handlePolicies(["USER","ADMIN"]), async (req, res) => {
 try {
     const {userId} = req.params;
@@ -33,7 +33,7 @@ try {
 }
 });
 
-//ADMIN
+//Ruta para borrar un usuario, solo el ADMIN , la puede usar.
 router.delete ("/:userId",handlePolicies(["ADMIN"]), async (req, res) => {
     try {
         const {userId} = req.params;
