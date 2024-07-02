@@ -146,10 +146,10 @@ async function purchaseCart(req, res) {
 
     console.log("usuario autenticado",userId);
   
-    // Llamar al servicio para procesar la compra del carrito
+    // Llamo al servicio para procesar la compra del carrito
     const { order, unprocessedItems } = await purchaseCartService(cid, userId);
 
-    // Devolver la orden y los productos no procesados
+    // Devuelve la orden y los productos no procesados
     res.status(201).send({ order, unprocessedItems });
   } catch (error) {
     res.status(500).send({ message: error.message });

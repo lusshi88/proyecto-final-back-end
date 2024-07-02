@@ -175,7 +175,7 @@ async function purchaseCartService (cid,userId){
       }
     }
 
-    // Crear una nueva orden con los productos procesados
+    // Crea una nueva orden con los productos procesados
     const order = new orderModel({
       userId: userId,
       items: itemsToOrder,
@@ -184,7 +184,7 @@ async function purchaseCartService (cid,userId){
     });
     await order.save();
 
-    // Generar un ticket de compra con los datos de la orden
+    // Genera un ticket de compra con los datos de la orden
     const ticket = new ticketModel({
       orderId: order._id,
       userId: userId,
@@ -202,7 +202,7 @@ async function purchaseCartService (cid,userId){
       await cartModel.findByIdAndDelete(cid);
     }
 
-    // Devolver la orden y los IDs de los productos no procesados
+    // Devuelve la orden y los IDs de los productos no procesados
     return { order, unprocessedItems: unprocessedItems.map(item => item.productId) };
     } catch (error) {
         throw new Error ("Error al procesar la compra")
