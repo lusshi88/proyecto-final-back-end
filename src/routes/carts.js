@@ -27,6 +27,9 @@ router.put('/:cid/products/:pid',cartControllers.productQuantity);
 //busco el id del carrito, y borro todo lo que tiene adentro 
 router.delete('/:cid', cartControllers.removeAllFromCart);
 
+//ruta para finalizar la compra
+router.post('/:cid/purchase',cartControllers.purchaseCart);
+
 
 
 

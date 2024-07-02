@@ -1,5 +1,8 @@
 const cartModel = require ('../models/cartModel');
 const productModel = require ('../models/productsModel');
+const orderModel = require ('../models/orderModel');
+const ticketModel = require('../models/ticketModel');
+
 
 //esta función crea el carrito
 async function createCartService (req,res) {
@@ -132,6 +135,81 @@ async function removeAllFromCartService (cid){
       return updatedCart;
 };
 
+async function purchaseCartService (cid,userId){
+    try {
+        // Busca el carrito por su ID y hace la populación de los productos
+    const cart = await cartModel.findById(cid).populate('items.productId');
+    if (!cart) {
+      throw new Error('Carrito no encontrado');
+    }
+
+    let itemsToOrder = []; // Lista de productos que se incluirán en la orden
+    let total = 0; // Total del costo de la orden
+    let unprocessedItems = []; // Lista de productos que no pudieron ser procesados por falta de stock
+
+    // Verifica stock de cada producto en el carrito
+    for (let item of cart.items) {
+      const product = await productModel.findById(item.productId);
+      console.log(item.productId);
+      if (product.stock >= item.quantity) {
+        // Si hay suficiente stock, resta la cantidad del stock del producto
+        product.stock -= item.quantity;
+        await product.save();
+
+        // Agrega el producto a la lista de la orden
+        itemsToOrder.push({
+          productId: product._id,
+          quantity: item.quantity,
+          price: item.price
+        });
+
+        // Sumar el costo del producto al total
+        total += item.price * item.quantity;
+      } else {
+        // Si no hay suficiente stock, agrega a la lista de productos no procesados
+        unprocessedItems.push({
+          productId: product._id,
+          quantity: item.quantity,
+          price: item.price
+        });
+      }
+    }
+
+    // Crear una nueva orden con los productos procesados
+    const order = new orderModel({
+      userId: userId,
+      items: itemsToOrder,
+      total: total,
+      status: 'pending'
+    });
+    await order.save();
+
+    // Generar un ticket de compra con los datos de la orden
+    const ticket = new ticketModel({
+      orderId: order._id,
+      userId: userId,
+      items: itemsToOrder,
+      total: total
+    });
+    await ticket.save();
+
+    // Si hay productos no procesados, actualiza el carrito con estos productos
+    if (unprocessedItems.length > 0) {
+      cart.items = unprocessedItems;
+      await cart.save();
+    } else {
+      // Si todos los productos fueron procesados, elimina el carrito
+      await cartModel.findByIdAndDelete(cid);
+    }
+
+    // Devolver la orden y los IDs de los productos no procesados
+    return { order, unprocessedItems: unprocessedItems.map(item => item.productId) };
+    } catch (error) {
+        throw new Error ("Error al procesar la compra")
+    }
+
+};
+
 module.exports = {
     getCartById,
     createCartService,
@@ -140,4 +218,5 @@ module.exports = {
     updatedCartService,
     productQuantityService,
     removeAllFromCartService,
+    purchaseCartService
 }

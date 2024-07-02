@@ -139,6 +139,22 @@ async function removeAllFromCart(req,res) {
   }
 }
 
+async function purchaseCart(req, res) {
+  try {
+    const { cid } = req.params;
+    const userId = req.user.id; 
+
+    console.log("usuario autenticado",userId);
+  
+    // Llamar al servicio para procesar la compra del carrito
+    const { order, unprocessedItems } = await purchaseCartService(cid, userId);
+
+    // Devolver la orden y los productos no procesados
+    res.status(201).send({ order, unprocessedItems });
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+}
 
 module.exports = {
   createCart,
@@ -148,6 +164,7 @@ module.exports = {
   removeFromCart,
   updatedCart,
   productQuantity,
-  removeAllFromCart
+  removeAllFromCart,
+  purchaseCart
 
 }

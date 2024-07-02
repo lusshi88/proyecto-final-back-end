@@ -74,7 +74,7 @@ app.use (`/${API_PREFIX}/auth`,authRoutes);
 app.use (`/${API_PREFIX}/users`, usersRoutes);
 
 //ruta para la vista de handlebars
-app.use(`/views`, viewsRoutes);
+app.use(`/${API_PREFIX}/views`, viewsRoutes);
 
 // Codigo para iniciar el server ----------------
 app.listen(PORT_APP, () => {

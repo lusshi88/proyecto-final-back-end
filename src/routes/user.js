@@ -8,7 +8,7 @@ const router = Router();
 //Ruta para mostrar todos los usuarios , es pública.
 router.get("/",handlePolicies(["PUBLIC"]), async (req, res ) => {
     try {
-        const users = await userModel.find();
+        const users = await userModel.find().select('first_name last_name age email role');
         return res.json({message:"Lista de usuarios", users: users});
     } catch (error) {
         console.log("Error del servidor al traer los usuarios",error);
