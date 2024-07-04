@@ -2,6 +2,7 @@ const cartModel = require ('../models/cartModel');
 const productModel = require ('../models/productsModel');
 const orderModel = require ('../models/orderModel');
 const ticketModel = require('../models/ticketModel');
+const { log } = require('handlebars/runtime');
 
 
 //esta función crea el carrito

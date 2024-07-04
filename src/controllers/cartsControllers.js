@@ -142,12 +142,21 @@ async function removeAllFromCart(req,res) {
 async function purchaseCart(req, res) {
   try {
     const { cid } = req.params;
-    const userId = req.user.id; 
 
+    const userId = req.user.id;
+    console.log("usuario autenticado", req.user);
+
+    //manejo de errores para el cid y el userId
+    if (!cid){
+      return res.status(400).json({ message: "ID del carrito no proporcionado" });
+    };
+    if (!userId){
+      return res.status(401).json({ message: "No se ha autenticado" });
+    };
     console.log("usuario autenticado",userId);
   
     // Llamo al servicio para procesar la compra del carrito
-    const { order, unprocessedItems } = await purchaseCartService(cid, userId);
+    const { order, unprocessedItems } = await purchaseCartService (cid, userId);
 
     // Devuelve la orden y los productos no procesados
     res.status(201).send({ order, unprocessedItems });

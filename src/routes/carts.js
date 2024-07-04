@@ -1,6 +1,7 @@
 const express = require('express');
 
 const cartControllers = require('../controllers/cartsControllers.js');
+const authenticate = require ('../middleware/authenticate.js');
 
 const router = express.Router();
 
@@ -28,7 +29,7 @@ router.put('/:cid/products/:pid',cartControllers.productQuantity);
 router.delete('/:cid', cartControllers.removeAllFromCart);
 
 //ruta para finalizar la compra
-router.post('/:cid/purchase',cartControllers.purchaseCart);
+router.post('/:cid/purchase',authenticate, cartControllers.purchaseCart);
 
 
 
