@@ -1,20 +1,13 @@
 const {Router} = require('express');
 const userModel = require('../models/userModel');
 const handlePolicies = require('../middleware/handle-policies.middleware');
+const userControler = require ( "../controllers/userControllers");
 
 
 const router = Router();
 
 //Ruta para mostrar todos los usuarios , es pública.
-router.get("/",handlePolicies(["PUBLIC"]), async (req, res ) => {
-    try {
-        const users = await userModel.find().select('first_name last_name age email role');
-        return res.json({message:"Lista de usuarios", users: users});
-    } catch (error) {
-        console.log("Error del servidor al traer los usuarios",error);
-        return res.status(500).json({message:"Error del servidor"});
-    }
-});
+router.get("/",handlePolicies(["PUBLIC"]),userControler.getUser);
 
 //Ruta para mostrar cada usuario por su ID, esta ruta solo la pueden usar los: USER Y ADMIN.
 router.get ("/:userId",handlePolicies(["USER","ADMIN"]), async (req, res) => {

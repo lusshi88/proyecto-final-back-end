@@ -144,7 +144,7 @@ async function purchaseCart(req, res) {
     const { cid } = req.params;
 
     const userId = req.user.id;
-    console.log("usuario autenticado", req.user);
+    console.log("usuario autenticado v2", req.user.id);
 
     //manejo de errores para el cid y el userId
     if (!cid){
@@ -153,10 +153,9 @@ async function purchaseCart(req, res) {
     if (!userId){
       return res.status(401).json({ message: "No se ha autenticado" });
     };
-    console.log("usuario autenticado",userId);
   
     // Llamo al servicio para procesar la compra del carrito
-    const { order, unprocessedItems } = await purchaseCartService (cid, userId);
+    const { order, unprocessedItems } = await cartService.purchaseCartService (cid, userId);
 
     // Devuelve la orden y los productos no procesados
     res.status(201).send({ order, unprocessedItems });

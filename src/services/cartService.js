@@ -1,5 +1,5 @@
 const cartModel = require ('../models/cartModel');
-const productModel = require ('../models/productsModel');
+const productsModel = require ('../models/productsModel');
 const orderModel = require ('../models/orderModel');
 const ticketModel = require('../models/ticketModel');
 const { log } = require('handlebars/runtime');
@@ -139,7 +139,8 @@ async function removeAllFromCartService (cid){
 async function purchaseCartService (cid,userId){
     try {
         // Busca el carrito por su ID y hace la populación de los productos
-    const cart = await cartModel.findById(cid).populate('items.productId');
+    const cart = await cartModel.findById(cid).populate("products.productId");
+    console.log("log del carrito",cart);
     if (!cart) {
       throw new Error('Carrito no encontrado');
     }
@@ -150,8 +151,11 @@ async function purchaseCartService (cid,userId){
 
     // Verifica stock de cada producto en el carrito
     for (let item of cart.items) {
-      const product = await productModel.findById(item.productId);
-      console.log(item.productId);
+      const product = await productsModel.findById(item.product);
+      console.log("log de product",product);
+      if (!product){
+        console.log(`producto con id ${item.products} no encontrado `);
+      };
       if (product.stock >= item.quantity) {
         // Si hay suficiente stock, resta la cantidad del stock del producto
         product.stock -= item.quantity;
