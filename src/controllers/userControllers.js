@@ -9,6 +9,29 @@ async function getUser (req,res){
     }
 };
 
+async function getUserById (req,res){
+    try {
+        const {userId} = req.params;
+        const user = await userService.getUserByIdService(userId);
+        return res.json ({message: "Usuarios encontrados por id:",user});
+
+    } catch (error) {
+        return res.status(500).json({message:"Error en el servidor,al encontrar usuario por ID",error});
+    }
+};
+
+async function getdeleteUserById (req,res){
+    try {
+        const {userId} = req.params;
+        const user = await userService.deleteUserByIdService(userId);
+        return res.json({message: "Usuario eliminado con éxito",user});
+    } catch (error) {
+        return res.status(500).json({message:"Error en el servidor, al borrar usuario por ID",error});
+    }
+};
+
 module.exports = {
-    getUser
+    getUser,
+    getUserById,
+    getdeleteUserById
 };
