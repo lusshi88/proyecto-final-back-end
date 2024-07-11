@@ -1,5 +1,5 @@
 {
-  "name": "desafio13",
+  "name": "proyecto-final",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -7,7 +7,7 @@
     "start:dev": " cross-env NODE_ENV=development nodemon ./src/app.js",
     "start:test": " cross-env NODE_ENV=test nodemon ./src/app.js",
     "start:prod": " cross-env NODE_ENV=production nodemon ./src/app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha ./src/controllers/userControllers.test.js --exit"
   },
   "keywords": [],
   "author": "",
@@ -35,6 +35,10 @@
     "uuid": "^10.0.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.0"
+    "@babel/register": "^7.24.6",
+    "chai": "^5.1.1",
+    "mocha": "^10.6.0",
+    "nodemon": "^3.1.0",
+    "sinon": "^18.0.0"
   }
 }

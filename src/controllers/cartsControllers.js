@@ -25,12 +25,12 @@ async function createCart(req, res) {
 async function cartByIdProducts (req,res) {
   try {
   const {cid} = req.params
-  console.log(cid);
+
   if (!cid) {
     return res.status(400).json({ message: "ID del carrito no proporcionado" });
   }
   const cart = await cartService.getCartById(cid);
-  console.log(cart);
+
   if (!cart) {
     return res.status(404).json({ message: "El carrito no existe" });
   }
@@ -43,19 +43,21 @@ return res.status(200).json({ message: `Estos son los productos del carrito con 
 }
 
 
-//función para agregar un producto al carrito como arreglo
-
-async function cidProductPid (req, res) {
-
-};
-
 //función para mandar un producto al carrito
 async function addToCart(req,res) {
   try {
-
     const {cid,pid} = req.params
+    if (!cid){
+      return res.status(400).json({ message: "ID del carrito no proporcionado" });
+    };
+    if (!pid) {
+      return res.status(400).json({ message: "ID del producto no proporcionado" });
+    }
     
     const cart = await cartService.addToCartService (cid,pid);
+    if (!cart) {
+      return res.status(404).json({ message: "No se pudo agregar el producto al carrito" });
+    }
         
     return res.status(200).json(cart);
   } catch (error) {
@@ -66,10 +68,18 @@ async function addToCart(req,res) {
 
 
 async function removeFromCart(req,res) {
-  
   const {cid,pid} = req.params
+  if (!cid){
+    return res.status(400).json({ message: "ID del carrito no proporcionado" });
+  };
+  if (!pid) {
+    return res.status(400).json({ message: "ID del producto no proporcionado" });
+  };
   try {
     const cart = await cartService.removeFromCartService(cid,pid)
+    if (!cart) {
+      return res.status(404).json({ message: "El producto no se pudo eliminar del carrito" });
+    }
     res.status(200).json({message: `producto con el id: ${pid}, eliminado correctamente`,cart});   
   } catch (error) {
     console.error('Error al eliminar producto del carrito:', error);
@@ -81,7 +91,13 @@ async function removeFromCart(req,res) {
 async function updatedCart (req,res) {
  try {
   const {cid} = req.params;
+  if (!cid){
+    return res.status(400).json({ message: "ID del carrito no proporcionado" });
+  };
   const updatedCart = req.body
+  if (!updatedCart) {
+    return res.status(400).json({ message: "Nuevos productos no proporcionados" });
+  }
 
   const result = await cartService.updatedCartService(cid,updatedCart);
   if (!result) {
@@ -108,17 +124,18 @@ async function productQuantity (req, res) {
     if (!cid) {
       return res.status(400).json({ message: "ID del carrito no proporcionado" });
     }
-    //console.log(`este es el id del cart ${cid}`);
     if (!pid) { 
       return res.status(400).json({ message: "ID del producto no proporcionado" });
     }
-    //console.log(`este en el id del producto ${pid}`);
     //paso por body la nueva cantidad 
     const newQuantity = req.body.quantity;
     if (!newQuantity) {
       return res.status(400).json({ message: "Cantidad no proporcionada" });
     }   
     const result = await cartService.productQuantityService(cid,pid,newQuantity);
+    if (!result){
+      return res.status(404).json({ message: "No se pudo actualizar la cantidad del producto" });
+    };
     return res.status(200).json(result);
   } catch (error) {
     console.log("error en el servidor al actualizar");
@@ -130,7 +147,13 @@ async function productQuantity (req, res) {
 async function removeAllFromCart(req,res) {
   try {
     const {cid} = req.params
+    if (!cid){
+      return res.status(400).json({ message: "ID del carrito no proporcionado" });
+    };
     const cart = await cartService.removeAllFromCartService(cid)
+    if (!cart) {
+      return res.status(404).json({ message: "No se pudo eliminar todos los productos del carrito" });
+    }
     res.status(200).json(cart)
 
   } catch (error) {
@@ -142,9 +165,12 @@ async function removeAllFromCart(req,res) {
 async function purchaseCart(req, res) {
   try {
     const { cid } = req.params;
+    if (!cid){
+      return res.status(400).json({ message: "ID del carrito no proporcionado" });
+    };
 
     const userId = req.user.id;
-    console.log("usuario autenticado v2", req.user.id);
+
 
     //manejo de errores para el cid y el userId
     if (!cid){
@@ -167,7 +193,6 @@ async function purchaseCart(req, res) {
 module.exports = {
   createCart,
   cartByIdProducts,
-  cidProductPid,
   addToCart,
   removeFromCart,
   updatedCart,

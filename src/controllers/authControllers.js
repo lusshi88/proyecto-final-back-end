@@ -14,6 +14,10 @@ async function login (req,res) {
 
 async function register (req,res) {
     const { first_name, last_name, email, age, password, role } = req.body;
+    //valido que todos los campos estén presentes y no estén vacíos.
+    if (!first_name || !last_name || !email || !age || !password || !role) {
+        return res.status(400).json({ message: "Faltan campos obligatorios" });
+    }
     try {
         const newUser = await authService.registerService({ first_name, last_name, email, age, password, role });
         res.json({ message: "Usuario creado exitosamente", user: newUser });

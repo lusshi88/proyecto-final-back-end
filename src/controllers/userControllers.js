@@ -12,6 +12,9 @@ async function getUser (req,res){
 async function getUserById (req,res){
     try {
         const {userId} = req.params;
+        if (!userId){
+            return res.status(400).json({message:"Debe proporcionar un ID de usuario"});
+        };
         const user = await userService.getUserByIdService(userId);
         return res.json ({message: "Usuarios encontrados por id:",user});
 
@@ -23,6 +26,9 @@ async function getUserById (req,res){
 async function getdeleteUserById (req,res){
     try {
         const {userId} = req.params;
+        if (!userId){
+            return res.status(400).json({message:"Debe proporcionar un ID de usuario"});
+        };
         const user = await userService.deleteUserByIdService(userId);
         return res.json({message: "Usuario eliminado con éxito",user});
     } catch (error) {

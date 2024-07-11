@@ -67,6 +67,9 @@ async function getProductsById (req,res) {
 async function getProductsLowerPrice (req,res){
   try {
     const {queryPrice} = req.query;
+    if (!queryPrice) {
+      return res.status(400).json({ message: "Precio no proporcionado" });
+    }
     const {carsLowerPriceCount,carsLowerPrice} = await productService.getProductsLowerPriceService(queryPrice);
   return res.status(200).json({
     message:"cars lower price list",
@@ -84,7 +87,13 @@ async function getProductsLowerPrice (req,res){
 async function getProductsCheaper (req,res){
   try {
     const {limitQuery} = req.query;
+    if (!limitQuery) {
+      return res.status(400).json({ message: "Limite no proporcionado" });
+    }
     const limitt = parseFloat(limitQuery);
+    if (isNaN(limitt) || limitt <= 0) {
+      return res.status(400).json({ message: "El parámetro de límite debe ser un número positivo" })};
+  
     const result = await productService.getProductsCheaperService(limitt);
     return res.status(202).json({
       message:"Cheapest product",
@@ -104,6 +113,15 @@ async function updateProduct (req,res){
       return res.status(400).json({ message: "ID de producto no proporcionado" });
     }
     const { title, price, description } = req.body
+    if (!title) {
+      return res.status(400).json({ message: "Título no proporcionado" });
+    };
+    if (!price) {
+      return res.status(400).json({ message: "Precio no proporcionado" });
+    };
+    if (!description) {
+      return res.status(400).json({ message: "Descripción no proporcionada" });
+    };
     const result = await productService.updateProductService(pid,title, price, description);
     return res.status(200).json({ message: "Producto actualizado", result });
 
