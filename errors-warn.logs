@@ -4,3 +4,15 @@
 {"level":"error","message":"Error al obtener usuarios: users is not defined"}
 {"level":"warn","message":"Usuarios encontrados: 6"}
 {"level":"warn","message":"El carrito con ID 661f37a856fae9078eed0e6 no existe"}
+{"level":"error","message":"Error al iniciar sesión para el usuario con email: mgrey@gmail.com"}
+{"level":"error","message":"Error al iniciar sesión para el usuario con email: bravoluis439@ymail.com"}
+{"level":"error","message":"Error al iniciar sesión para el usuario con email: bravoluis439@gmail.com"}
+{"level":"error","message":"Error al iniciar sesión para el usuario con email: bravoluis439@gmail.com"}
+{"level":"error","message":"Error al iniciar sesión para el usuario con email: bravoluis439@gmail.com"}
+{"level":"error","message":"Error al iniciar sesión para el usuario con email: bravoluis439@ymail.com"}
+{"level":"error","message":"Error al iniciar sesión para el usuario con email: bravoluis439@ymail.com"}
+{"level":"error","message":"Error al iniciar sesión para el usuario con email: bravoluis439@ymail.com"}
+{"level":"error","message":"Error al iniciar sesión para el usuario con email: bravoluis439@ymail.com"}
+{"level":"error","message":"Error al iniciar sesión para el usuario con email: bravoluis439@ymail.com"}
+{"level":"error","message":"Error al iniciar sesión para el usuario con email: bravoluis439@ymail.com"}
+{"level":"error","message":"Error al procesar la compra del carrito: Error: Error al procesar la compra"}

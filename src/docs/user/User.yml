@@ -1,0 +1,17 @@
+paths:
+  /api/users/:
+    get:
+      summary: get all users
+      tags:
+        - Users
+      responses:
+        "200":
+          description: get all users from DB
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#"
+        "500":
+          description: error server side

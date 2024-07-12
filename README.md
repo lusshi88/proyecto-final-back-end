@@ -10,7 +10,8 @@ Este proyecto es un ecommerce realizado con Node JS, que permite hacer la realiz
 ## development mode
  $npm run start:dev
 ## test mode
- $npm run start:test
+ $npm test
 ## production mode
  $npm run start:production
+
 

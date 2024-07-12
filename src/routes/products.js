@@ -10,7 +10,7 @@ router.post('/', productsController.createProducts);
 router.get('/', productsController.getProducts);
 
 //ruta para buscar un producto por su ID
- //router.get('/:pid', productsController.getProductsById );
+router.get('/:pid', productsController.getProductsById );
 
 //ruta para buscar el producto de menor a mayor precio
 router.get('/lowerprice', productsController.getProductsLowerPrice);

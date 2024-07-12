@@ -5,6 +5,8 @@ const displayRoutes = require('express-routemap');
 const handlebars = require('express-handlebars');
 const cookieParser = require('cookie-parser');
 const passport = require('passport');
+const swaggerJSDoc = require ("swagger-jsdoc");
+const swaggerUi = require ("swagger-ui-express");
 
 //Rutas importadas
 const productsRoutes =  require('./routes/products.js');
@@ -15,6 +17,9 @@ const authRoutes = require ("./routes/auth.js");
 const usersRoutes = require ("./routes/user.js")
 const initializePassport = require("./config/passport.config");
 const { useLogger } = require ('./utils/logger.js')
+const { swaggerOpts } = require('./config/swagger.config.js')
+
+
 
 
 const { PORT } = require('./config/config.js');
@@ -42,6 +47,10 @@ app.use(useLogger);
 initializePassport();
 app.use(passport.initialize());
 
+// Swagger
+const specs = swaggerJSDoc(swaggerOpts);
+
+
 //handlebars 
 app.engine("handlebars", handlebars.engine());
 app.set("views", path.join(__dirname, "/views"));
@@ -50,7 +59,8 @@ app.set("view engine", "handlebars")
 
 // MONGODB --------------------------------
 const mongoose  = require ("mongoose")
-mongoose.connect('mongodb+srv://ecommerce88:UWfDP0RRKUB5Oofa@cluster88.gxgjzbs.mongodb.net/?retryWrites=true&w=majority', {
+const mongoURL = process.env.MONGO_URL;
+mongoose.connect(mongoURL, {
     dbName: 'ecommerce',
   })
     .then((conn) => {
@@ -71,12 +81,14 @@ const API_PREFIX = "api";
 // archivo estatico
 app.use(`/static`,express.static(`public`));
 
+
 //rutas 
 app.use(`/${API_PREFIX}/products`, productsRoutes);
 app.use(`/${API_PREFIX}/carts`, cartRoutes);
 app.use(`/${API_PREFIX}/sessions`, sessionsRoutes);
 app.use (`/${API_PREFIX}/auth`,authRoutes);
 app.use (`/${API_PREFIX}/users`, usersRoutes);
+app.use (`/${API_PREFIX}/docs`,swaggerUi.serve, swaggerUi.setup(specs));
 
 //ruta para la vista de handlebars
 app.use(`/${API_PREFIX}/views`, viewsRoutes);
