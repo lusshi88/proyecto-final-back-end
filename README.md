@@ -20,6 +20,7 @@ Asegúrate de tener los permisos adecuados o usar el usuario admin para estas op
 
 ### Usuario ADMIN
 Para probar los edpoints que requieren permisos elevados, usa las siguientes credenciales:
+----------------------------------------------------------------
 **email** Rvillamizar@gmail.com 
----
+------------------------------------------------
 **password** 12345678
