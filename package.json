@@ -32,7 +32,8 @@
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "socket.io": "^4.7.4",
-    "uuid": "^10.0.0"
+    "uuid": "^10.0.0",
+    "winston": "^3.13.1"
   },
   "devDependencies": {
     "@babel/register": "^7.24.6",

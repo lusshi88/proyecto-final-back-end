@@ -14,6 +14,8 @@ const viewsRoutes = require('./routes/views.js');
 const authRoutes = require ("./routes/auth.js");
 const usersRoutes = require ("./routes/user.js")
 const initializePassport = require("./config/passport.config");
+const { useLogger } = require ('./utils/logger.js')
+
 
 const { PORT } = require('./config/config.js');
 
@@ -32,6 +34,9 @@ const app = express();
 app.use(express.json());
 // Middleware para inicializar Passport.js y manejar la autenticación de usuarios
 app.use(express.urlencoded({extended: true }));
+
+//logger
+app.use(useLogger);
 
 //passport
 initializePassport();
