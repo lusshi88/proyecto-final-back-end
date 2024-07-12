@@ -14,4 +14,11 @@ Este proyecto es un ecommerce realizado con Node JS, que permite hacer la realiz
 ## production mode
  $npm run start:production
 
+## Ejecutar los edpoints ##
+Usa herramientas como Postman para enviar solicitudes GET,POST,DELETE a los edpoints.
+Asegúrate de tener los permisos adecuados o usar el usuario admin para estas operaciones.
 
+### Usuario ADMIN
+Para probar los edpoints que requieren permisos elevados, usa las siguientes credenciales:
+**email** Rvillamizar@gmail.com 
+**password** 12345678
