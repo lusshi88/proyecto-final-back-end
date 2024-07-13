@@ -16,7 +16,7 @@ async function getUser (req,res){
 async function upgradeUserToPremium(req, res) {
     try {
         req.logger.info('Iniciando actualización de usuario a premium');
-      const userId = req.user.id; 
+        const userId = req.body.userId;  
   
       // Llama al servicio para actualizar el rol del usuario
       const updatedUser = await userService.upgradeUserToPremiumService(userId);

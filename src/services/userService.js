@@ -12,18 +12,15 @@ async function getUserService (req,res){
 async function upgradeUserToPremiumService(userId) {
     try {
       // Buscar al usuario por su ID
-      let user = await userModel.findById(userId);
+      let updatedUser = await userModel.findByIdAndUpdate(userId, { role: 'PREMIUM' }, { new: true });
       console.log("usuario id",userId);
-      console.log("userId: " + user);
-      if (!user) {
+      console.log("userId: " + updatedUser);
+      if (!updatedUser) {
         throw new Error("Usuario no encontrado");
       }
   
-      // Actualizar el rol del usuario a 'premium'
-      user.role = 'premium';
-      await user.save();
+      return updatedUser;
   
-      return user;
     } catch (error) {
         throw new Error(`Error al actualizar el rol del usuario: ${error.message}`);}
   };
