@@ -16,3 +16,36 @@
 {"level":"error","message":"Error al iniciar sesión para el usuario con email: bravoluis439@ymail.com"}
 {"level":"error","message":"Error al iniciar sesión para el usuario con email: bravoluis439@ymail.com"}
 {"level":"error","message":"Error al procesar la compra del carrito: Error: Error al procesar la compra"}
+{"level":"error","message":"Error al agregar producto al carrito: ReferenceError: productModel is not defined"}
+{"level":"error","message":"Error al agregar producto al carrito: TypeError: Cannot read properties of undefined (reading 'equals')"}
+{"level":"error","message":"Error al agregar producto al carrito: TypeError: Cannot read properties of undefined (reading 'equals')"}
+{"level":"error","message":"Error al agregar producto al carrito: TypeError: Cannot read properties of undefined (reading 'equals')"}
+{"level":"error","message":"Error al agregar producto al carrito: TypeError: Cannot read properties of undefined (reading 'equals')"}
+{"level":"error","message":"Error al agregar producto al carrito: TypeError: Cannot read properties of undefined (reading 'equals')"}
+{"level":"error","message":"Error al agregar producto al carrito: TypeError: Cannot read properties of undefined (reading 'equals')"}
+{"level":"error","message":"Error al agregar producto al carrito: TypeError: Cannot read properties of undefined (reading 'equals')"}
+{"level":"error","message":"Error al agregar producto al carrito: TypeError: Cannot read properties of undefined (reading 'equals')"}
+{"level":"error","message":"Error al agregar producto al carrito: TypeError: Cannot read properties of undefined (reading 'equals')"}
+{"level":"error","message":"Error al agregar producto al carrito: ValidationError: products.0.productId: Path `productId` is required., products.1.productId: Path `productId` is required."}
+{"level":"error","message":"Error al agregar producto al carrito: TypeError: Cannot read properties of undefined (reading 'equals')"}
+{"level":"error","message":"Error al agregar producto al carrito: TypeError: Cannot read properties of undefined (reading 'equals')"}
+{"level":"error","message":"Error al agregar producto al carrito: ReferenceError: mongoose is not defined"}
+{"level":"error","message":"Error al agregar producto al carrito: ReferenceError: mongoose is not defined"}
+{"level":"error","message":"Error al agregar producto al carrito: TypeError: Class constructor ObjectId cannot be invoked without 'new'"}
+{"level":"error","message":"Error al agregar producto al carrito: TypeError: Cannot read properties of undefined (reading 'equals')"}
+{"level":"error","message":"Error al obtener usuario por ID: [object Object]"}
+{"level":"error","message":"Error al obtener usuario por ID: [object Object]"}
+{"level":"error","message":"Error al obtener usuario por ID: [object Object]"}
+{"level":"error","message":"Error al obtener usuario por ID: [object Object]"}
+{"level":"error","message":"Error al obtener usuario por ID: [object Object]"}
+{"level":"error","message":"Error al obtener usuario por ID: [object Object]"}
+{"level":"error","message":"Error al obtener usuario por ID: [object Object]"}
+{"level":"error","message":"Error al obtener usuario por ID: [object Object]"}
+{"level":"error","message":"Error al obtener usuario por ID: [object Object]"}
+{"level":"error","message":"Error al obtener usuario por ID: [object Object]"}
+{"level":"error","message":"Error al obtener usuario por ID: [object Object]"}
+{"level":"error","message":"Error al obtener usuario por ID: [object Object]"}
+{"level":"error","message":"Error al obtener usuario por ID: [object Object]"}
+{"level":"error","message":"Error al obtener usuario por ID: [object Object]"}
+{"level":"error","message":"Error al obtener usuario por ID: [object Object]"}
+{"level":"error","message":"Error al obtener usuario por ID: [object Object]"}

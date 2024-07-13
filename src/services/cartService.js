@@ -3,6 +3,7 @@ const productsModel = require ('../models/productsModel');
 const orderModel = require ('../models/orderModel');
 const ticketModel = require('../models/ticketModel');
 const { log } = require('handlebars/runtime');
+const mongoose = require('mongoose');
 
 
 //esta función crea el carrito
@@ -33,11 +34,13 @@ async function addToCartService (cid,pid) {
         if (!cart){
             throw new Error("ID del carrito incorrecto");
         }
-        const product = await productModel.findById(pid);
+        const product = await productsModel.findById(pid);
         if (!product){
             throw new Error("ID del producto incorrecto");
         }
-        const existingProductIndex = cart.products.findIndex(item => item.product.equals(pid));
+        const productId = new mongoose.Types.ObjectId(pid);
+        const existingProductIndex = cart.products.findIndex(item => item.productId.equals(productId));
+        console.log("log del existing product",existingProductIndex);
          
         if (existingProductIndex !== -1) {
             // Incrementar la cantidad si el producto ya está en el carrito

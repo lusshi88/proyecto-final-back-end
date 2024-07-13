@@ -1,28 +1,29 @@
 const express = require('express');
 const productsController = require('../controllers/productsControllers.js');
+const handlePolicies = require('../middleware/handle-policies.middleware');
 
 const router = express.Router();
 
-//ruta para insertar los productos
-router.post('/', productsController.createProducts);
+//Ruta para insertar los productos (requiere rol ADMIN)
+router.post('/',handlePolicies(["ADMIN"]), productsController.createProducts);
 
-//ruta para obtener todos los productos
-router.get('/', productsController.getProducts);
+//Ruta para obtener todos los productos (requiere rol ADMIN o USER)
+router.get('/', handlePolicies(["ADMIN","USER"]),productsController.getProducts);
 
-//ruta para buscar un producto por su ID
-router.get('/:pid', productsController.getProductsById );
+//Ruta para buscar un producto por su ID (requiere rol ADMIN o USER)
+router.get('/:pid', handlePolicies(["ADMIN","USER"]),productsController.getProductsById );
 
-//ruta para buscar el producto de menor a mayor precio
-router.get('/lowerprice', productsController.getProductsLowerPrice);
+//Ruta para buscar el producto de menor a mayor precio (requiere rol PUBLIC, USER o ADMIN)
+router.get('/lowerprice',handlePolicies(["PUBLIC","USER","ADMIN"]), productsController.getProductsLowerPrice);
 
-//ruta para buscar el producto más barato
-router.get('/cheaper', productsController.getProductsCheaper);
+//Ruta para buscar el producto de menor a mayor precio (requiere rol PUBLIC, USER o ADMIN)
+router.get('/cheaper',handlePolicies(["PUBLIC","USER","ADMIN"]), productsController.getProductsCheaper);
 
-//ruta para tomar un producto y actualizarlo
-router.put ('/:pid', productsController.updateProduct);
+// Ruta para tomar un producto y actualizarlo (requiere rol ADMIN)
+router.put ('/:pid',handlePolicies(["ADMIN"]), productsController.updateProduct);
 
-//ruta para eliminar un producto 
-router.delete ('/:pid', productsController.deleteProduct);
+//ruta para eliminar un producto (requiere rol ADMIN)
+router.delete ('/:pid',handlePolicies(["ADMIN"]), productsController.deleteProduct);
 module.exports = router;
 
 

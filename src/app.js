@@ -11,7 +11,6 @@ const swaggerUi = require ("swagger-ui-express");
 //Rutas importadas
 const productsRoutes =  require('./routes/products.js');
 const cartRoutes = require('./routes/carts.js');
-const sessionsRoutes = require ("./routes/sessions")
 const viewsRoutes = require('./routes/views.js');
 const authRoutes = require ("./routes/auth.js");
 const usersRoutes = require ("./routes/user.js")
@@ -85,7 +84,6 @@ app.use(`/static`,express.static(`public`));
 //rutas 
 app.use(`/${API_PREFIX}/products`, productsRoutes);
 app.use(`/${API_PREFIX}/carts`, cartRoutes);
-app.use(`/${API_PREFIX}/sessions`, sessionsRoutes);
 app.use (`/${API_PREFIX}/auth`,authRoutes);
 app.use (`/${API_PREFIX}/users`, usersRoutes);
 app.use (`/${API_PREFIX}/docs`,swaggerUi.serve, swaggerUi.setup(specs));

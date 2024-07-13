@@ -9,6 +9,25 @@ async function getUserService (req,res){
     }
 };
 
+async function upgradeUserToPremiumService(userId) {
+    try {
+      // Buscar al usuario por su ID
+      let user = await userModel.findById(userId);
+      console.log("usuario id",userId);
+      console.log("userId: " + user);
+      if (!user) {
+        throw new Error("Usuario no encontrado");
+      }
+  
+      // Actualizar el rol del usuario a 'premium'
+      user.role = 'premium';
+      await user.save();
+  
+      return user;
+    } catch (error) {
+        throw new Error(`Error al actualizar el rol del usuario: ${error.message}`);}
+  };
+
 async function getUserByIdService (userId){
     try {
         const user = await userModel.findById(userId);
@@ -30,6 +49,7 @@ async function deleteUserByIdService (userId){
 };
 module.exports = {
     getUserService,
+    upgradeUserToPremiumService,
     getUserByIdService,
     deleteUserByIdService
 };

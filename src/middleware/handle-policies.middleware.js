@@ -31,6 +31,32 @@ function handlePolicies(policies) {
       }
     })(req, res, next);
   };
+};
+
+function handlePremiumPolicy(req, res, next) {
+  passport.authenticate("jwt", { session: false }, (err, userJWT, info) => {
+    if (err) {
+      return next(err);
+    }
+    if (!userJWT) {
+      return res
+        .status(401)
+        .send({ message: "Acceso denegado. Token inválido o expirado." });
+    }
+    if (userJWT.user.role === 'premium') {
+      req.user = userJWT;
+      return next();
+    } else {
+      return res
+        .status(403)
+        .send({ message: "Acceso denegado. Solo usuarios premium pueden acceder." });
+    }
+  })(req, res, next);
 }
 
-module.exports = handlePolicies;
+
+
+module.exports = handlePolicies,handlePremiumPolicy
+
+
+

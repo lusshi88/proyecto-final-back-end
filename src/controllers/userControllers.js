@@ -13,6 +13,24 @@ async function getUser (req,res){
     }
 };
 
+async function upgradeUserToPremium(req, res) {
+    try {
+        req.logger.info('Iniciando actualización de usuario a premium');
+      const userId = req.user.id; 
+  
+      // Llama al servicio para actualizar el rol del usuario
+      const updatedUser = await userService.upgradeUserToPremiumService(userId);
+        req.logger.info(`Usuario actualizado a premium por ID ${userId}: ${updatedUser}`);
+      return res.status(200).json({
+        message: "Usuario actualizado a premium con éxito",
+        user: updatedUser
+      });
+    } catch (error) {
+      req.logger.error(`Error al actualizar usuario a premium: ${error}`);
+      return res.status(500).json({ message: "Error del servidor", error: error.message });
+    }
+  };
+
 async function getUserById (req,res){
     try {
         req.logger.info('Iniciando búsqueda de usuario por ID');
@@ -48,6 +66,7 @@ async function getdeleteUserById (req,res){
 
 module.exports = {
     getUser,
+    upgradeUserToPremium,
     getUserById,
     getdeleteUserById
 };
