@@ -18,4 +18,5 @@ router.get ("/:userId",handlePolicies(["USER","ADMIN"]),userControler.getUserByI
 //Ruta para borrar un usuario por ID, solo el ADMIN , la puede usar.
 router.delete ("/:userId",handlePolicies(["ADMIN"]),userControler.getdeleteUserById);
 
+
 module.exports = router;

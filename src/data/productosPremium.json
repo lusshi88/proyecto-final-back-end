@@ -1,0 +1,38 @@
+[
+    {
+       "title": "Peugeot 206 RC",
+       "description": "El modelo más deportivo del peugeot 206",
+       "price": 20000,
+       "color": "Rojo",
+       "model": 2005,
+       "stock": 3,
+       "thumbnails": [
+         "url1",
+         "url2"
+       ]
+     },
+     {
+       "title": "Fiat uno ie turbo",
+       "description": "El modelo turbo exclusivo del fiat uno",
+       "price": 2000,
+       "color": "Azul",
+       "model": 1996,
+       "stock": 5,
+       "thumbnails": [
+         "url5",
+         "url6"
+       ]
+     },
+     {
+       "title": "Renault clio williams",
+       "description": "El renault clio deportivo exclusivo",
+       "price": 18000,
+       "color": "Negro",
+       "model": 1997,
+       "stock": 7,
+       "thumbnails": [
+         "url7",
+         "url8"
+       ]
+    }
+]

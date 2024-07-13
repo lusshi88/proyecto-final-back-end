@@ -1,5 +1,6 @@
 const productsModel = require ("../models/productsModel");
 const cartModel = require ("../models/cartModel");
+const productsModelPremium = require ("../models/productsPremiumModel");
 
 async function createProductsService (carsData){
     try {
@@ -9,6 +10,16 @@ async function createProductsService (carsData){
         throw new Error ("error en el servicio, al crear el producto");
         
     }
+};
+
+async function createProductsPremiumService (carsDataPremium) {
+  try {
+    let result = await productsModelPremium.create(carsDataPremium)
+    return result
+} catch (error) {
+    throw new Error ("error en el servicio, al crear el producto");
+    
+}
 };
 
 
@@ -127,16 +138,51 @@ async function createProductsService (carsData){
       
     }
   };
+  
+  async function getProductsPremiumService (page=1, limit=10){
+    try {
+      const {
+          docs,
+          totalDocs,
+          limit: limitPag,
+          totalPages,
+          hasPrevPage,
+          hasNextPage,
+          nextPage,
+          prevPage,
+          prevLink,
+        } = await productsModelPremium.paginate({}, { page, limit })
+        return {
+          message:"cars list",
+          docs,
+          payload: docs,
+          totalPages,
+          prevPage,
+          nextPage,
+          page,
+          hasPrevPage,
+          hasNextPage,
+          prevLink,
+          length: totalDocs,
+        limit: limitPag
+        };
+      
+  } catch (error) {
+      throw new Error ("error en el servicio al mostrar los productos")
+  }
 
+  };
 
 
 
 module.exports ={
     createProductsService,
+    createProductsPremiumService,
     getProductsService,
     getProductsByIdService,
     getProductsLowerPriceService,
     getProductsCheaperService,
     updateProductService,
     deleteProductService,
+    getProductsPremiumService
   };

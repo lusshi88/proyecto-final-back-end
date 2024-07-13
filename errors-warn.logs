@@ -50,3 +50,7 @@
 {"level":"error","message":"Error al obtener usuario por ID: [object Object]"}
 {"level":"error","message":"Error al obtener usuario por ID: [object Object]"}
 {"level":"error","message":"Error al obtener usuario por ID: [object Object]"}
+{"level":"error","message":"Error al obtener usuario por ID: [object Object]"}
+{"level":"error","message":"Error al obtener usuario por ID: [object Object]"}
+{"level":"error","message":"Error al iniciar sesión para el usuario con email: bravoluis439@ymail.com"}
+{"level":"error","message":"Error al actualizar usuario a premium: Error: Error al actualizar el rol del usuario: Cast to ObjectId failed for value \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjY5MmU5Yjg4MzcxZjAwODdkNDNlZGNmIiwiZmlyc3RfbmFtZSI6Imx1aXMiLCJsYXN0X25hbWUiOiJ1c2VyIiwiZW1haWwiOiJMdXNlckBnbWFpbC5jb20iLCJhZ2UiOjI1LCJyb2xlIjoiVVNFUiJ9LCJpYXQiOjE3MjA5MDQxNTYsImV4cCI6MTcyMDkwNTk1Nn0.V5sslxzvLVxHTpt9yiVMxxdCjkZASoZZpab9MPBCefE\" (type string) at path \"_id\" for model \"user\""}

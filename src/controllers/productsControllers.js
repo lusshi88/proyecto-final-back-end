@@ -1,8 +1,8 @@
 const productService = require ("../services/productService.js");
-const Product = require("../schemas/productsSchemas.js");
 
 //datos de los productos.json
 const carsData = require("../data/productos.json");
+const carsDataPremium = require ("../data/productosPremium.json");
 
 // función para insertar los productos
 async function createProducts (req,res){
@@ -10,6 +10,21 @@ async function createProducts (req,res){
     req.logger.info('Insertando productos');
     const result = await productService.createProductsService(carsData)
     req.logger.info('Productos insertados correctamente:', result);
+  return res.status(200).json({
+    message: "insert exitoso",
+    carts: result,
+  })
+} catch (error) {
+  req.logger.error(`Error al insertar productos: ${error}`);
+  return res.status(500).json({message: "error del servidor"});
+}
+};
+
+async function createProductsPremium (req,res){
+  try {
+    req.logger.info('Insertando productos premium');
+    const result = await productService.createProductsPremiumService(carsDataPremium)
+    req.logger.info('Productos premium insertados correctamente:', result);
   return res.status(200).json({
     message: "insert exitoso",
     carts: result,
@@ -165,15 +180,45 @@ async function deleteProduct (req,res) {
   }
 };
 
+async function getPremiumContent (req, res) {
+  try {
+    req.logger.info('Obteniendo lista de productos premium');
+    const { page = 1, limit = 10 } = req.query;
+    const productsData = await productService.getProductsService(page,limit);
+    req.logger.info(`Productos obtenidos. Página: ${page}, Límite: ${limit}`);
+
+    return res.status(200).json({
+      message: "Cars list",
+      payload: productsData.docs,
+      totalPages: productsData.totalPages,
+      prevPage: productsData.prevPage,
+      nextPage: productsData.nextPage,
+      page,
+      hasPrevPage: productsData.hasPrevPage,
+      hasNextPage: productsData.hasNextPage,
+      prevLink: productsData.prevLink,
+      length: productsData.totalDocs,
+      limit: productsData.limit,
+    });
+ 
+} catch (error) {
+  req.logger.error(`Error al obtener la lista de productos: ${error}`);
+  return res.status(500).json({ message: "error del servidor" });
+}
+};
+
+
 
 
 module.exports = {
   createProducts,
+  createProductsPremium,
   getProducts,
   getProductsLowerPrice,
   getProductsCheaper,
   getProductsById,
   updateProduct,
-  deleteProduct
+  deleteProduct,
+  getPremiumContent
  
 };
