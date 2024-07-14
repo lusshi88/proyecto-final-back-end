@@ -2,25 +2,27 @@ const cartModel = require ("../models/cartModel.js");
 const productsModel = require("../models/productsModel.js");
 const cartService = require("../services/cartService.js");
 
-
-//función para crear el carrito
+//función para crear el carrito asociado al usuario actual
 async function createCart(req, res) {
+  const {userId} = req.body;
   try {
-    req.logger.info('Creando un nuevo carrito');
-    // Crear un nuevo carrito vacío
-    const newCart = await cartService.createCartService({ products: [] });
+      req.logger.info(`Usuario ${userId} está creando un nuevo carrito`);
+      
+      // Llama al servicio para crear un nuevo carrito asociado al usuario actual
+      const newCart = await cartService.createCartService(userId);
 
-    req.logger.info(`Carrito insertado: ${newCart}`);
+      req.logger.info(`Carrito insertado: ${newCart}`);
 
-    return res.status(200).json({
-      message: "Inserción exitosa",
-      cart: newCart
-    });
+      // Devuelve una respuesta con el carrito creado
+      return res.status(201).json({
+          message: "Inserción exitosa",
+          cart: newCart
+      });
   } catch (error) {
-    req.logger.error(`Error al insertar el carrito: ${error}`);
-    return res.status(500).json({ error: 'Error al insertar el carrito' });
+      req.logger.error(`Error al insertar el carrito: ${error.message}`);
+      return res.status(500).json({ error: 'Error al insertar el carrito' });
   }
-}
+};
 
 //función para buscar los productos de un carrito con su ID
 async function cartByIdProducts (req,res) {
@@ -70,7 +72,7 @@ async function addToCart(req,res) {
     req.logger.error(`Error al agregar producto al carrito: ${error}`);
     res.status(500).json({ message:"error del servidor"});
   }
-}
+};
 
 
 async function removeFromCart(req,res) {
@@ -176,35 +178,20 @@ async function removeAllFromCart(req,res) {
   }
 }
 
-async function purchaseCart(req, res) {
-  try {
-    const { cid } = req.params;
-    if (!cid){
-      return res.status(400).json({ message: "ID del carrito no proporcionado" });
-    };
+//función para finalizar la compra del carrito
+  async function purchaseCart(req, res) {
+    const cartId = req.params.cid;
 
-    const userId = req.user.id;
-    req.logger.info(`Procesando compra del carrito ${cid} para el usuario ${userId}`);
+    try {
+        // Llama al servicio para finalizar la compra y generar un ticket
+        const result = await cartService.purchaseCartService(cartId, req.user.username); 
 
-    //manejo de errores para el cid y el userId
-    if (!cid){
-      return res.status(400).json({ message: "ID del carrito no proporcionado" });
-    };
-    if (!userId){
-      return res.status(401).json({ message: "No se ha autenticado" });
-    };
-  
-    // Llamo al servicio para procesar la compra del carrito
-    const { order, unprocessedItems } = await cartService.purchaseCartService (cid, userId);
-
-    // Devuelve la orden y los productos no procesados
-    res.status(201).send({ order, unprocessedItems });
-  } catch (error) {
-    req.logger.error(`Error al procesar la compra del carrito: ${error}`);
-    res.status(500).send({ message: error.message });
-  }
+        // Devuelve la respuesta del servicio
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 }
-
 module.exports = {
   createCart,
   cartByIdProducts,

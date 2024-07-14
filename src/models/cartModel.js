@@ -17,7 +17,12 @@ const cartsSchema = new mongoose.Schema({
      
       
     }
-  ]
+  ],
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "user", // Referencia al modelo de usuario que creó el carrito
+    required: true
+}
 });
 
 

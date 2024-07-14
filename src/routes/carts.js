@@ -9,7 +9,8 @@ const router = express.Router();
 
 
 //ruta para crear el carrito nuevo
-router.post('/',handlePolicies(['ADMIN']), cartControllers.createCart);
+//router.post('/',handlePolicies(['ADMIN']), cartControllers.createCart);
+router.post('/', handlePolicies(['USER', 'ADMIN']), cartControllers.createCart);
 
 //ruta para buscar un carrito por su ID y que muestre los productos en el
 router.get('/:cid',handlePolicies(['USER', 'ADMIN']), cartControllers.cartByIdProducts); 
@@ -30,7 +31,7 @@ router.put('/:cid/products/:pid',handlePolicies(['USER', 'ADMIN']),cartControlle
 router.delete('/:cid',handlePolicies(['ADMIN']), cartControllers.removeAllFromCart);
 
 //ruta para finalizar la compra
-router.post('/:cid/purchase',authenticate, cartControllers.purchaseCart);
+router.post('/:cid/purchase',handlePolicies(['USER', 'ADMIN']), cartControllers.purchaseCart);
 
 
 
